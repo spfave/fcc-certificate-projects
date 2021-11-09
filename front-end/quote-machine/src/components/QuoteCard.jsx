@@ -8,6 +8,7 @@ export function QuoteCard() {
   const [quote, setQuote] = useState({
     author: '',
     text: '',
+    tweet: '',
   });
 
   useEffect(() => {
@@ -30,7 +31,11 @@ export function QuoteCard() {
     if (!response.ok) throw response.json();
 
     const quote = (await response.json())[0];
-    setQuote({ author: quote.author, text: quote.quote });
+    setQuote({
+      author: quote.author,
+      text: quote.quote,
+      tweet: `"${quote.quote}" \n - ${quote.author}`,
+    });
   }
 
   return (
@@ -45,7 +50,9 @@ export function QuoteCard() {
         </button>
         <a
           id="tweet-quote"
-          href="https://twitter.com/intent/tweet"
+          href={`https://twitter.com/intent/tweet?text=${encodeURI(
+            quote.tweet,
+          )}`}
           target="_blank"
           rel="noreferrer"
         >
