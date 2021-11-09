@@ -8,8 +8,16 @@ html,
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f3f3f3;
+  margin: 0;
 }
 
 a {
   text-decoration: none;
+}
+
+.root-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }

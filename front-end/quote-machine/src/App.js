@@ -1,7 +1,11 @@
+import { QuoteCard } from 'components/QuoteCard';
+
 import './App.scss';
 
-function App() {
-  return <div className="App">Test</div>;
+export default function App() {
+  return (
+    <div className="root-container">
+      <QuoteCard />
+    </div>
+  );
 }
-
-export default App;
