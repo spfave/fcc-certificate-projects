@@ -27,9 +27,7 @@ export function QuoteCard() {
       },
     };
     const response = await fetch(quoteAPI, quoteParams);
-
     if (!response.ok) throw response.json();
-
     const quote = (await response.json())[0];
     setQuote({
       author: quote.author,
@@ -41,15 +39,18 @@ export function QuoteCard() {
   return (
     <div id="quote-box">
       <div>
-        <h1 id="text">{quote.text}</h1>
-        <p id="author">{quote.author}</p>
+        <h1 id="text">
+          <q>{quote.text}</q>
+        </h1>
+        <p id="author">- {quote.author}</p>
       </div>
       <div className="buttons">
-        <button id="new-quote" onClick={getQuote}>
+        <button id="new-quote" className="btn" onClick={getQuote}>
           New Quote
         </button>
         <a
           id="tweet-quote"
+          className="btn-link"
           href={`https://twitter.com/intent/tweet?text=${encodeURI(
             quote.tweet,
           )}`}

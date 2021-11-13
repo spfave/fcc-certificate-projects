@@ -1,3 +1,6 @@
+$grad-color1: rgba(174, 233, 238, 1);
+$grad-color2: rgba(148, 150, 233, 1);
+
 *,
 *:before,
 *:after {
@@ -7,7 +10,6 @@
 html,
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f3f3f3;
   margin: 0;
 }
 
@@ -20,4 +22,6 @@ a {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  background: $grad-color1;
+  background: radial-gradient(circle, $grad-color1 0%, $grad-color2 100%);
 }
