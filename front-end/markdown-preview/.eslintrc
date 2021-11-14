@@ -33,7 +33,7 @@
         "no-console": "warn",
         "prettier/prettier": "off",
         "sort-imports": [
-            "error",
+            "warn",
             {
                 "ignoreCase": true,
                 "ignoreDeclarationSort": false,
