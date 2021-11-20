@@ -1,7 +1,7 @@
 import styled from '@mui/system/styled';
 import Typography from '@mui/material/Typography';
 
-const Column = styled('div')({
+const Column = styled('section')({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
@@ -24,7 +24,9 @@ export function Editor({ markup, setMarkup }) {
           id="editor"
           placeholder={markup}
           onChange={(e) => setMarkup(e.target.value)}
-        ></MarkdownTextarea>
+        >
+          {markup}
+        </MarkdownTextarea>
       </div>
     </Column>
   );
