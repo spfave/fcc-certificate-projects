@@ -17,13 +17,14 @@ export function QuoteCard() {
 
   async function getQuote() {
     // Fetch a random famous quote
+    // API: https://rapidapi.com/andruxnet/api/random-famous-quotes/
     const quoteAPI =
       'https://andruxnet-random-famous-quotes.p.rapidapi.com/?cat=famous';
     const quoteParams = {
       method: 'GET',
       headers: {
         'x-rapidapi-host': process.env.REACT_APP_QUOTE_API_HOST,
-        'x-rapidapi-key': process.env.REACT_APP_QUOTE_API_KEY,
+        'x-rapidapi-key': process.env.REACT_APP_QUOTE_API_KEY, // provide api-key for testing
       },
     };
     const response = await fetch(quoteAPI, quoteParams);
