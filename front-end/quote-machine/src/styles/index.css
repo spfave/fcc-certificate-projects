@@ -1,0 +1,29 @@
+/* index.css */
+:root {
+	--grad-color1: rgba(174, 233, 238, 1);
+	--grad-color2: rgba(148, 150, 233, 1);
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	margin: 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+/* app.css */
+main {
+	min-height: 100vh;
+	display: grid;
+	place-items: center;
+	background: radial-gradient(circle, var(--grad-color1) 0%, var(--grad-color2) 100%);
+}

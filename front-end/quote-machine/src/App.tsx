@@ -1,5 +1,12 @@
-import './App.css';
+import QuoteCard from '~/components/quote-card';
 
 export default function App() {
-  return <div className="App">App</div>;
+	return (
+		<>
+			<main>
+				<QuoteCard />
+			</main>
+			{/* <Footer /> */}
+		</>
+	);
 }

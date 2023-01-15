@@ -1,13 +1,13 @@
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import App from './App';
+import App from './app';
 
-import './index.css';
+import '~/styles/index.css';
 
 // prettier-ignore
 ReactDOM
-  .createRoot(document.getElementById('root') as HTMLElement)
+  .createRoot(document.getElementById('app') as HTMLElement)
   .render(
       <React.StrictMode>
         <App />
