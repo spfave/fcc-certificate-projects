@@ -1,6 +1,5 @@
 #quote-box {
-	min-width: 400px;
-	max-width: 650px;
+	width: clamp(var(--min-width), var(--min-width), 650px);
 	padding: 2rem;
 	background-color: var(--color-light);
 	border-radius: 1rem;
@@ -25,12 +24,13 @@
 	& .buttons {
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
+		align-items: stretch;
 		margin-top: 1rem;
 
 		& .btn {
 			padding: 0.7rem 1rem;
 			cursor: pointer;
+			line-height: 1;
 			transition: box-shadow 0.25s;
 
 			&:hover {
