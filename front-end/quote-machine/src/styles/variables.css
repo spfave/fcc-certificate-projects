@@ -1,0 +1,11 @@
+:root {
+	/* Sizes */
+	--min-width: 500px;
+
+	/* Colors */
+	--color-light: #f4f4f4;
+	--color-med: #cccccc;
+	--color-dark: #373a3c;
+	--grad-color1: rgba(174, 233, 238, 1);
+	--grad-color2: rgba(148, 150, 233, 1);
+}
