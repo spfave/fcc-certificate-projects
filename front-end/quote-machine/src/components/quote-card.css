@@ -21,6 +21,10 @@
 		}
 	}
 
+	& .msg {
+		color: var(--color-med);
+	}
+
 	& .buttons {
 		display: flex;
 		justify-content: space-between;
@@ -32,6 +36,11 @@
 			cursor: pointer;
 			line-height: 1;
 			transition: box-shadow 0.25s;
+
+			&:disabled {
+				opacity: 0.5;
+				cursor: auto;
+			}
 
 			&:hover {
 				box-shadow: 0 0 5px 5px var(--color-med);

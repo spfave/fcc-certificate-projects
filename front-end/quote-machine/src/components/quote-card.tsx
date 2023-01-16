@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 
 import './quote-card.css';
 
+type Status = 'idle' | 'pending' | 'resolved' | 'error';
 type QuoteData = {
 	_id: string;
 	content: string; // Quote text
@@ -33,8 +34,10 @@ function formatQuote(qData: QuoteData): Quote {
 }
 
 function useQuote() {
+	const [status, setStatus] = useState<Status>('idle');
+	const [error, setError] = useState<string | null>(null);
 	const [quote, setQuote] = useState<Quote>({
-		content: '...fetching a quote',
+		content: '',
 		author: '',
 		tweet: '',
 	});
@@ -44,25 +47,45 @@ function useQuote() {
 	}, []);
 
 	async function handleGetNewQuote() {
+		setStatus('pending');
+		setError(null);
 		const qData = await getQuote();
-		qData ? setQuote(formatQuote(qData)) : null;
+
+		if (qData) {
+			setQuote(formatQuote(qData));
+			setStatus('resolved');
+		} else {
+			setError('Failed to retrieve quote');
+			setStatus('error');
+		}
 	}
 
-	return {quote, handleGetNewQuote};
+	return {status, quote, handleGetNewQuote, error};
 }
 
 export default function QuoteCard() {
-	const {quote, handleGetNewQuote} = useQuote();
+	const {status, quote, handleGetNewQuote, error} = useQuote();
 
 	return (
 		<div id="quote-box">
-			<div className="quote">
-				<blockquote id="text">{quote.content}</blockquote>
-				<cite id="author"> - {quote.author}</cite>
-			</div>
+			{status === 'resolved' && (
+				<div className="quote">
+					<blockquote id="text">{quote.content}</blockquote>
+					<cite id="author"> - {quote.author}</cite>
+				</div>
+			)}
+			{(status === 'idle' || status === 'pending') && (
+				<p className="msg">...fetching a quote</p>
+			)}
+			{status === 'error' && <p className="msg">{error}</p>}
 
 			<div className="buttons">
-				<button id="new-quote" className="btn" onClick={handleGetNewQuote}>
+				<button
+					id="new-quote"
+					className="btn"
+					onClick={handleGetNewQuote}
+					disabled={status === 'pending'}
+				>
 					New Quote
 				</button>
 				<a
