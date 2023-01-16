@@ -32,7 +32,7 @@ function formatQuote(qData: QuoteData): Quote {
 	};
 }
 
-export default function QuoteCard() {
+function useQuote() {
 	const [quote, setQuote] = useState<Quote>({
 		content: '...fetching a quote',
 		author: '',
@@ -40,13 +40,19 @@ export default function QuoteCard() {
 	});
 
 	useEffect(() => {
-		handleGetQuote();
+		handleGetNewQuote();
 	}, []);
 
-	async function handleGetQuote() {
+	async function handleGetNewQuote() {
 		const qData = await getQuote();
 		qData ? setQuote(formatQuote(qData)) : null;
 	}
+
+	return {quote, handleGetNewQuote};
+}
+
+export default function QuoteCard() {
+	const {quote, handleGetNewQuote} = useQuote();
 
 	return (
 		<div id="quote-box">
@@ -56,7 +62,7 @@ export default function QuoteCard() {
 			</div>
 
 			<div className="buttons">
-				<button id="new-quote" className="btn" onClick={handleGetQuote}>
+				<button id="new-quote" className="btn" onClick={handleGetNewQuote}>
 					New Quote
 				</button>
 				<a
