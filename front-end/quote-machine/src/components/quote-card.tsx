@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 
 import './quote-card.css';
+import twitterSVG from '~/assets/icons8-twitter.svg';
 
 type Status = 'idle' | 'pending' | 'resolved' | 'error';
 type QuoteData = {
@@ -95,7 +96,7 @@ export default function QuoteCard() {
 					target="_blank"
 					rel="noreferrer"
 				>
-					Tweet
+					<img src={twitterSVG} alt="twitter icon" height={20} width={20} />
 				</a>
 			</div>
 		</div>

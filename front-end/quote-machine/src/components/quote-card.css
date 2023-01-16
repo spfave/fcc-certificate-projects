@@ -22,6 +22,7 @@
 	}
 
 	& .msg {
+		margin-top: 0;
 		color: var(--color-med);
 	}
 
@@ -55,6 +56,9 @@
 			}
 
 			&:is(a) {
+				display: grid;
+				place-items: center;
+				padding: 5px 10px;
 				border: 1px solid var(--grad-color2);
 				border-radius: 0.3rem;
 				color: var(--grad-color2);
