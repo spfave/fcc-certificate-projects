@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 
 import './quote-card.css';
 import twitterSVG from '~/assets/icons8-twitter.svg';
@@ -15,9 +15,9 @@ type QuoteData = {
 type Quote = Pick<QuoteData, 'content' | 'author'> & {tweet: string};
 
 const quoteUrl = 'https://api.quotable.io/random?maxLength=240'; //https://github.com/lukePeavey/quotable
-async function getQuote() {
+async function getQuote(init?: RequestInit | undefined) {
 	try {
-		const response = await fetch(quoteUrl);
+		const response = await fetch(quoteUrl, init);
 		const data = await response.json();
 		if (!response.ok) throw data;
 		return data as QuoteData;
@@ -43,15 +43,11 @@ function useQuote() {
 		tweet: '',
 	});
 
-	useEffect(() => {
-		handleGetNewQuote();
-	}, []);
-
-	async function handleGetNewQuote() {
+	const handleGetNewQuote = useCallback(async (init?: RequestInit | undefined) => {
 		setStatus('pending');
 		setError(null);
-		const qData = await getQuote();
 
+		const qData = await getQuote(init);
 		if (qData) {
 			setQuote(formatQuote(qData));
 			setStatus('resolved');
@@ -59,7 +55,13 @@ function useQuote() {
 			setError('Failed to retrieve quote');
 			setStatus('error');
 		}
-	}
+	}, []);
+
+	useEffect(() => {
+		const controller = new AbortController();
+		handleGetNewQuote({signal: controller.signal});
+		return () => controller.abort('cancel request');
+	}, [handleGetNewQuote]);
 
 	return {status, quote, handleGetNewQuote, error};
 }
@@ -84,7 +86,7 @@ export default function QuoteCard() {
 				<button
 					id="new-quote"
 					className="btn"
-					onClick={handleGetNewQuote}
+					onClick={() => handleGetNewQuote()}
 					disabled={status === 'pending'}
 				>
 					New Quote
