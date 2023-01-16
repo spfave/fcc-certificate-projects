@@ -1,21 +1,62 @@
+import {useEffect, useState} from 'react';
+
 import './quote-card.css';
 
-export default function QuoteCard() {
-	const quote = {
-		text: 'Lorem ipsum dolor sit veniam maxime facere nihil rem sapiente quidem quaerat quas error nisi nemo eius recusandae aperiam quam mollitia molestias similique. Dolor ipsam eos provident explicabo quasi non iure, consectetur, repellat inventore commodi dolores illo eligendi optio.',
-		author: 'Author',
-		tweet: `"quoted text" \n - Author`,
+type QuoteData = {
+	_id: string;
+	content: string; // Quote text
+	author: string; // Full name of the author
+	authorSlug: string; // `slug` of the quote author
+	length: number; // Length of quote (number of characters)
+	tags: string[]; // Array of tag names for quote
+};
+type Quote = Pick<QuoteData, 'content' | 'author'> & {tweet: string};
+
+const quoteUrl = 'https://api.quotable.io/random?maxLength=240'; //https://github.com/lukePeavey/quotable
+async function getQuote() {
+	try {
+		const response = await fetch(quoteUrl);
+		const data = await response.json();
+		if (!response.ok) throw data;
+		return data as QuoteData;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+function formatQuote(qData: QuoteData): Quote {
+	return {
+		author: qData.author,
+		content: qData.content,
+		tweet: `"${qData.content}" \n - ${qData.author}`,
 	};
+}
+
+export default function QuoteCard() {
+	const [quote, setQuote] = useState<Quote>({
+		content: '...fetching a quote',
+		author: '',
+		tweet: '',
+	});
+
+	useEffect(() => {
+		handleGetQuote();
+	}, []);
+
+	async function handleGetQuote() {
+		const qData = await getQuote();
+		qData ? setQuote(formatQuote(qData)) : null;
+	}
 
 	return (
 		<div id="quote-box">
 			<div className="quote">
-				<blockquote id="text">{quote.text}</blockquote>
+				<blockquote id="text">{quote.content}</blockquote>
 				<cite id="author"> - {quote.author}</cite>
 			</div>
 
 			<div className="buttons">
-				<button id="new-quote" className="btn">
+				<button id="new-quote" className="btn" onClick={handleGetQuote}>
 					New Quote
 				</button>
 				<a
