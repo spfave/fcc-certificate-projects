@@ -7,6 +7,6 @@ describe('QuoteCard Component', () => {
 	test('Render component', () => {
 		render(<QuoteCard />);
 
-		expect(screen.findByRole('button', {name: 'New Quote'}));
+		expect(screen.getByRole('button', {name: 'New Quote'})).toBeInTheDocument();
 	});
 });
