@@ -3,6 +3,7 @@ import {useCallback, useEffect, useState} from 'react';
 import './quote-card.css';
 import twitterSVG from '~/assets/icons8-twitter.svg';
 
+// Model types
 type Status = 'idle' | 'pending' | 'resolved' | 'error';
 type QuoteData = {
 	_id: string;
@@ -14,6 +15,7 @@ type QuoteData = {
 };
 type Quote = Pick<QuoteData, 'content' | 'author'> & {tweet: string};
 
+// Data fetching
 const quoteUrl = 'https://api.quotable.io/random?maxLength=240'; //https://github.com/lukePeavey/quotable
 async function getQuote(init?: RequestInit | undefined) {
 	try {
@@ -26,6 +28,7 @@ async function getQuote(init?: RequestInit | undefined) {
 	}
 }
 
+// Utils
 function formatQuote(qData: QuoteData): Quote {
 	return {
 		author: qData.author,
@@ -34,6 +37,7 @@ function formatQuote(qData: QuoteData): Quote {
 	};
 }
 
+// Component custom hook
 function useQuote() {
 	const [status, setStatus] = useState<Status>('idle');
 	const [error, setError] = useState<string | null>(null);
@@ -66,6 +70,7 @@ function useQuote() {
 	return {status, quote, handleGetNewQuote, error};
 }
 
+// Component
 export default function QuoteCard() {
 	const {status, quote, handleGetNewQuote, error} = useQuote();
 
