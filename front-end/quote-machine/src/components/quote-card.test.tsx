@@ -1,5 +1,5 @@
 import {describe, expect, test} from 'vitest';
-import {render, screen} from '@testing-library/react';
+import {render, screen, userEvent} from 'test-utils';
 
 import QuoteCard from './quote-card';
 
