@@ -5,7 +5,7 @@ import twitterSVG from '~/assets/icons8-twitter.svg';
 
 // Model types
 type Status = 'idle' | 'pending' | 'resolved' | 'error';
-type QuoteData = {
+export type QuoteData = {
 	_id: string;
 	content: string; // Quote text
 	author: string; // Full name of the author
@@ -76,16 +76,16 @@ export default function QuoteCard() {
 
 	return (
 		<div id="quote-box">
+			{(status === 'idle' || status === 'pending') && (
+				<p className="msg">...fetching a quote</p>
+			)}
+			{status === 'error' && <p className="msg">{error}</p>}
 			{status === 'resolved' && (
 				<div className="quote">
 					<blockquote id="text">{quote.content}</blockquote>
 					<cite id="author"> - {quote.author}</cite>
 				</div>
 			)}
-			{(status === 'idle' || status === 'pending') && (
-				<p className="msg">...fetching a quote</p>
-			)}
-			{status === 'error' && <p className="msg">{error}</p>}
 
 			<div className="buttons">
 				<button
