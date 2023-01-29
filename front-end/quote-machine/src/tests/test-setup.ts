@@ -1,4 +1,4 @@
-import {expect, afterEach} from 'vitest';
+import {vi, expect, beforeEach, afterEach} from 'vitest';
 import {cleanup} from '@testing-library/react';
 import matchers from '@testing-library/jest-dom/matchers'; //pnpm fix: https://github.com/testing-library/jest-dom/issues/123
 
@@ -6,4 +6,9 @@ import matchers from '@testing-library/jest-dom/matchers'; //pnpm fix: https://g
 expect.extend(matchers);
 
 // run cleanup after each test case (e.g. clearing jsdom)
-afterEach(() => cleanup());
+beforeEach(() => {
+	vi.resetAllMocks();
+});
+afterEach(() => {
+	cleanup();
+});
