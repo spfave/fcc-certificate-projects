@@ -1,4 +1,5 @@
 import {useCallback, useEffect, useState} from 'react';
+// import fetch from 'cross-fetch'; // use if running MSW for mocking test server, see test notes
 
 import './quote-card.css';
 import twitterSVG from '~/assets/icons8-twitter.svg';
