@@ -1,9 +1,9 @@
 :root {
-  /* Sizes */
-  --min-width: 500px;
+	/* Sizes */
+	--min-width: 500px;
 
-  /* Colors */
-  --color-light: #f4f4f4;
-  --color-med: #646464;
-  --color-dark: #313335;
+	/* Colors */
+	--color-light: #f4f4f4;
+	--color-med: #646464;
+	--color-dark: #313335;
 }
