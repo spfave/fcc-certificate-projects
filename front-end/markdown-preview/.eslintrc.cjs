@@ -22,6 +22,8 @@ module.exports = {
 		'react/react-in-jsx-scope': 'off',
 		'react-hooks/rules-of-hooks': 'error', // Checks rules of hooks
 		'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
+		'@typescript-eslint/no-empty-function': 'warn',
+		'@typescript-eslint/no-inferrable-types': 'warn',
 	},
 	overrides: [],
 };
