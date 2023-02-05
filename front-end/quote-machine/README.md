@@ -1,8 +1,7 @@
 # **Random Quote Machine**
 
-## **Code Sandbox**
-[Demo Application](https://codesandbox.io/s/quote-machine-g3k3y)  
-Requires api key to [random famous quote](https://rapidapi.com/andruxnet/api/random-famous-quotes/) API for functionality
+## **Demo**
+[StackBlitz](https://stackblitz.com/edit/spf-fcc-fe-quote-machine)
 
 ## **Objective**
 Build a CodePen.io app that is functionally similar to this: https://codepen.io/freeCodeCamp/full/qRZeGZ.
