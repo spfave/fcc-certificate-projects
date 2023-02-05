@@ -1,6 +1,9 @@
-# **Markdown Previewer**
+# **Markdown Editor/Viewer**
 
-## Objective 
+## **Demo**
+[StackBlitz](https://stackblitz.com/edit/spf-fcc-fe-markdown-preview)
+
+## **Objective** 
 Build a CodePen.io app that is functionally similar to this: https://codepen.io/freeCodeCamp/full/GrZVVO.
 
 Fulfill the below user stories and get all of the tests to pass. Give it your own personal style.
@@ -25,7 +28,7 @@ You can build your project by using this CodePen template and clicking Save to c
 
 Once you're done, submit the URL to your working project with all its tests passing.
 
-## Working Notes
+## **Working Notes**
 Packages:
 [Marked](https://github.com/markedjs/marked?utm_source=cdnjs&utm_medium=cdnjs_link&utm_campaign=cdnjs_library)  
 [DOMPurify ](https://github.com/cure53/DOMPurify)
