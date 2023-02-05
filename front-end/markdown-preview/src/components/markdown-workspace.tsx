@@ -3,11 +3,12 @@ import ReactMarkdown from 'react-markdown';
 import MarkdownProvider, {useMarkdown, useMarkdownUpdate} from './markdown-provider';
 
 import './markdown-workspace.css';
+import {markdownStarter} from '~/assets/markdown-starter';
 
 export default function MarkdownWorkspace() {
 	return (
 		<div className="markdown-workspace">
-			<MarkdownProvider initialMarkdown={'test value'}>
+			<MarkdownProvider initialMarkdown={markdownStarter}>
 				<MarkdownEditor />
 				<MarkdownPreview />
 			</MarkdownProvider>
@@ -26,7 +27,8 @@ function MarkdownEditor() {
 				<textarea
 					id="editor"
 					name="markdown"
-					placeholder={markdown}
+					placeholder={markdownStarter}
+					value={markdown}
 					onChange={updateMarkdwon}
 				>
 					{markdown}
