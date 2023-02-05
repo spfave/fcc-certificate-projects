@@ -1,13 +1,13 @@
 import ReactMarkdown from 'react-markdown';
 
-import MarkdownProvider from './markdown-provider';
+import MarkdownProvider, {useMarkdown, useMarkdownUpdate} from './markdown-provider';
 
 import './markdown-workspace.css';
 
 export default function MarkdownWorkspace() {
 	return (
 		<div className="markdown-workspace">
-			<MarkdownProvider initialMarkdown={''}>
+			<MarkdownProvider initialMarkdown={'test value'}>
 				<MarkdownEditor />
 				<MarkdownPreview />
 			</MarkdownProvider>
@@ -16,22 +16,34 @@ export default function MarkdownWorkspace() {
 }
 
 function MarkdownEditor() {
+	const markdown = useMarkdown();
+	const updateMarkdwon = useMarkdownUpdate();
+
 	return (
 		<section className="markdown-section">
 			<h2>Editor</h2>
 			<div>
-				<textarea id="editor" name="markdown"></textarea>
+				<textarea
+					id="editor"
+					name="markdown"
+					placeholder={markdown}
+					onChange={updateMarkdwon}
+				>
+					{markdown}
+				</textarea>
 			</div>
 		</section>
 	);
 }
 
 function MarkdownPreview() {
+	const markdown = useMarkdown();
+
 	return (
 		<section className="markdown-section">
 			<h2>Preview</h2>
 			<div id="preview">
-				<ReactMarkdown>{'test'}</ReactMarkdown>
+				<ReactMarkdown>{markdown}</ReactMarkdown>
 			</div>
 		</section>
 	);
