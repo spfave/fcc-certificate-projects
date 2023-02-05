@@ -1,3 +1,5 @@
+import ReactMarkdown from 'react-markdown';
+
 import MarkdownProvider from './markdown-provider';
 
 import './markdown-workspace.css';
@@ -14,9 +16,23 @@ export default function MarkdownWorkspace() {
 }
 
 function MarkdownEditor() {
-	return <section className="editor">Editor</section>;
+	return (
+		<section className="markdown-section">
+			<h2>Editor</h2>
+			<div>
+				<textarea id="editor" name="markdown"></textarea>
+			</div>
+		</section>
+	);
 }
 
 function MarkdownPreview() {
-	return <section className="preview">Preview</section>;
+	return (
+		<section className="markdown-section">
+			<h2>Preview</h2>
+			<div id="preview">
+				<ReactMarkdown>{'test'}</ReactMarkdown>
+			</div>
+		</section>
+	);
 }
