@@ -1,0 +1,30 @@
+.markdown-workspace {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(var(--min-width), 1fr));
+	gap: 1rem;
+	height: 100dvh;
+}
+
+.markdown-section {
+	display: grid;
+	grid-template-rows: auto 1fr;
+	min-height: 50dvh;
+
+	& h2 {
+		margin: 0 auto 0.5rem;
+	}
+
+	& div {
+		display: grid;
+
+		& textarea {
+			resize: none;
+			width: 100%;
+			background-color: #eee;
+		}
+	}
+
+	& #preview {
+		overflow: auto;
+	}
+}
