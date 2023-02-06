@@ -44,7 +44,7 @@ function MarkdownPreview() {
 	return (
 		<section className="markdown-section">
 			<h2>Preview</h2>
-			<div id="preview">
+			<div id="preview" role="document" tabIndex={0}>
 				<ReactMarkdown>{markdown}</ReactMarkdown>
 			</div>
 		</section>
