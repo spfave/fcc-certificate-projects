@@ -20,6 +20,7 @@ const drumSounds: DrumSound[] = [
 	{ soundName: 'Kick', soundSrc: 'audio/RP4_KICK_1.mp3', soundKey: 'x' },
 	{ soundName: 'Closed HH', soundSrc: 'audio/Cev_H2.mp3', soundKey: 'c' },
 ];
+const soundKeys = drumSounds.map(({ soundKey }) => soundKey);
 
 // Utility functions
 function playSound(soundKey: string) {
@@ -28,12 +29,19 @@ function playSound(soundKey: string) {
 	sound.play();
 }
 
-function playKeySound(event: KeyboardEvent, keyboardKey: string) {
-	if (event.key === keyboardKey) playSound(keyboardKey);
+function playKeySound(event: KeyboardEvent) {
+	if (soundKeys.includes(event.key)) playSound(event.key);
 }
 
 // Component: Drum Machine
 export default function DrumMachine() {
+	useEffect(() => {
+		window.addEventListener('keydown', playKeySound);
+
+		// Clean up
+		return () => window.removeEventListener('keydown', playKeySound);
+	}, []);
+
 	return (
 		<div id="drum-machine">
 			<div id="drum-pads">
@@ -54,18 +62,6 @@ export default function DrumMachine() {
 type DrumButtonProps = DrumSound & { handlePlaySound: () => void };
 function DrumButton(props: DrumButtonProps) {
 	const { soundName, soundSrc, soundKey, handlePlaySound: onPlaySound } = props;
-
-	// useEffect(() => {
-	// 	const body = document.querySelector('body') as HTMLBodyElement;
-	// 	body.addEventListener('keydown', handlePlaySoundKey);
-
-	// 	// Clean up
-	// 	return () => body.removeEventListener('keydown', handlePlaySoundKey);
-	// }, []);
-
-	// function handlePlaySoundKey(event: KeyboardEvent) {
-	// 	if (event.key === soundKey) handlePlaySound();
-	// }
 
 	return (
 		<button id={soundName} className="drum-pad" onClick={onPlaySound}>
