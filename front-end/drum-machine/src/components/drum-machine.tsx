@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import './drum-machine.css';
 
@@ -8,6 +8,7 @@ type DrumSound = {
 	soundSrc: string;
 };
 
+const initialVolume = 0.5;
 const drumSounds: Map<string, DrumSound> = new Map([
 	['Q', { soundName: 'Heater 1', soundSrc: 'audio/Heater-1.mp3' }],
 	['W', { soundName: 'Heater 2', soundSrc: 'audio/Heater-2.mp3' }],
@@ -21,18 +22,20 @@ const drumSounds: Map<string, DrumSound> = new Map([
 ]);
 
 // Utility functions
-function playSound(soundKey: string) {
+function playSound(soundKey: string, volume: number) {
 	const sound = document.getElementById(soundKey) as HTMLAudioElement;
 	sound.currentTime = 0;
+	sound.volume = volume;
 	sound.play();
 }
 
 // Component: Drum Machine
 export default function DrumMachine() {
+	const volume = useRef(initialVolume);
 	const [displaySound, setDisplaySound] = useState('');
 
 	function handlePlaySound(soundKey: string) {
-		playSound(soundKey);
+		playSound(soundKey, volume.current);
 		setDisplaySound((drumSounds.get(soundKey) as DrumSound).soundName);
 	}
 
@@ -50,10 +53,26 @@ export default function DrumMachine() {
 		return () => window.removeEventListener('keydown', handlePlayKeySound);
 	}, [handlePlayKeySound]);
 
+	function handleChangeVolume(event: React.ChangeEvent<HTMLInputElement>) {
+		volume.current = event.target.valueAsNumber;
+	}
+
 	return (
 		<div id="drum-machine">
 			<DrumBoard handlePlaySound={handlePlaySound} />
 			<div id="display">{displaySound}</div>
+			<div id="drum-controls">
+				<label htmlFor="volume" />
+				<input
+					title="volume control"
+					type="range"
+					min="0"
+					max="1"
+					step="0.01"
+					defaultValue={initialVolume}
+					onChange={handleChangeVolume}
+				/>
+			</div>
 		</div>
 	);
 }
