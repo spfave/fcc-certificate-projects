@@ -6,19 +6,18 @@ import './drum-machine.css';
 type DrumSound = {
 	soundName: string;
 	soundSrc: string;
-	soundKey: string;
 };
 
 const drumSounds: Map<string, DrumSound> = new Map([
-	['q', { soundName: 'Heater 1', soundSrc: 'audio/Heater-1.mp3', soundKey: 'q' }],
-	['w', { soundName: 'Heater 2', soundSrc: 'audio/Heater-2.mp3', soundKey: 'w' }],
-	['e', { soundName: 'Heater 3', soundSrc: 'audio/Heater-3.mp3', soundKey: 'e' }],
-	['a', { soundName: 'Heater 4', soundSrc: 'audio/Heater-4.mp3', soundKey: 'a' }],
-	['s', { soundName: 'Clap', soundSrc: 'audio/Heater-6.mp3', soundKey: 's' }],
-	['d', { soundName: 'Open HH', soundSrc: 'audio/Dsc_Oh.mp3', soundKey: 'd' }],
-	['z', { soundName: 'Kick & Hat', soundSrc: 'audio/Kick_n_Hat.mp3', soundKey: 'z' }],
-	['x', { soundName: 'Kick', soundSrc: 'audio/RP4_KICK_1.mp3', soundKey: 'x' }],
-	['c', { soundName: 'Closed HH', soundSrc: 'audio/Cev_H2.mp3', soundKey: 'c' }],
+	['Q', { soundName: 'Heater 1', soundSrc: 'audio/Heater-1.mp3' }],
+	['W', { soundName: 'Heater 2', soundSrc: 'audio/Heater-2.mp3' }],
+	['E', { soundName: 'Heater 3', soundSrc: 'audio/Heater-3.mp3' }],
+	['A', { soundName: 'Heater 4', soundSrc: 'audio/Heater-4.mp3' }],
+	['S', { soundName: 'Clap', soundSrc: 'audio/Heater-6.mp3' }],
+	['D', { soundName: 'Open HH', soundSrc: 'audio/Dsc_Oh.mp3' }],
+	['Z', { soundName: 'Kick & Hat', soundSrc: 'audio/Kick_n_Hat.mp3' }],
+	['X', { soundName: 'Kick', soundSrc: 'audio/RP4_KICK_1.mp3' }],
+	['C', { soundName: 'Closed HH', soundSrc: 'audio/Cev_H2.mp3' }],
 ]);
 
 // Utility functions
@@ -39,26 +38,25 @@ export default function DrumMachine() {
 		return () => window.removeEventListener('keydown', handlePlayKeySound);
 	}, []);
 
-	function handlePlaySound(sound: DrumSound) {
-		playSound(sound.soundKey);
-		setDisplaySound(sound.soundName);
+	function handlePlaySound(soundKey: string) {
+		playSound(soundKey);
+		setDisplaySound((drumSounds.get(soundKey) as DrumSound).soundName);
 	}
 
 	function handlePlayKeySound({ key }: KeyboardEvent) {
-		if (drumSounds.has(key)) {
-			playSound(key);
-			setDisplaySound((drumSounds.get(key) as DrumSound).soundName);
-		}
+		const uKey = key.toUpperCase();
+		if (drumSounds.has(uKey)) handlePlaySound(uKey);
 	}
 
 	return (
 		<div id="drum-machine">
 			<div id="drum-pads">
-				{[...drumSounds.values()].map((drumSound) => (
+				{[...drumSounds.entries()].map(([soundKey, drumSound]) => (
 					<DrumButton
-						key={drumSound.soundKey}
+						key={drumSound.soundName}
+						soundKey={soundKey}
 						{...drumSound}
-						handlePlaySound={() => handlePlaySound(drumSound)}
+						handlePlaySound={() => handlePlaySound(soundKey)}
 					/>
 				))}
 			</div>
@@ -68,7 +66,7 @@ export default function DrumMachine() {
 }
 
 // Component: Drum Button
-type DrumButtonProps = DrumSound & { handlePlaySound: () => void };
+type DrumButtonProps = DrumSound & { soundKey: string; handlePlaySound: () => void };
 function DrumButton(props: DrumButtonProps) {
 	const { soundName, soundSrc, soundKey, handlePlaySound: onPlaySound } = props;
 
