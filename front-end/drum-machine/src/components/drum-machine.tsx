@@ -34,6 +34,10 @@ export default function DrumMachine() {
 	const volume = useRef(initialVolume);
 	const [displaySound, setDisplaySound] = useState('');
 
+	function handleChangeVolume(event: React.ChangeEvent<HTMLInputElement>) {
+		volume.current = event.target.valueAsNumber;
+	}
+
 	function handlePlaySound(soundKey: string) {
 		playSound(soundKey, volume.current);
 		setDisplaySound((drumSounds.get(soundKey) as DrumSound).soundName);
@@ -53,14 +57,10 @@ export default function DrumMachine() {
 		return () => window.removeEventListener('keydown', handlePlayKeySound);
 	}, [handlePlayKeySound]);
 
-	function handleChangeVolume(event: React.ChangeEvent<HTMLInputElement>) {
-		volume.current = event.target.valueAsNumber;
-	}
-
 	return (
 		<div id="drum-machine">
 			<DrumBoard handlePlaySound={handlePlaySound} />
-			<div id="display">{displaySound}</div>
+			<p id="display">{displaySound}</p>
 			<div id="drum-controls">
 				<label htmlFor="volume" />
 				<input

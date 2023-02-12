@@ -3,13 +3,17 @@
 		display: grid;
 		gap: 0.5rem;
 		grid-template-columns: repeat(3, 1fr);
-	}
 
-	& .drum-pad {
-		text-transform: uppercase;
+		& .drum-pad {
+			text-transform: uppercase;
+		}
 	}
 
 	& #display {
 		text-align: center;
+
+		&::before {
+			content: '\feff';
+		}
 	}
 }
