@@ -21,13 +21,28 @@ const drumSounds: DrumSound[] = [
 	{ soundName: 'Closed HH', soundSrc: 'audio/Cev_H2.mp3', soundKey: 'c' },
 ];
 
+// Utility functions
+function playSound(soundKey: string) {
+	const sound = document.getElementById(soundKey) as HTMLAudioElement;
+	sound.currentTime = 0;
+	sound.play();
+}
+
+function playKeySound(event: KeyboardEvent, keyboardKey: string) {
+	if (event.key === keyboardKey) playSound(keyboardKey);
+}
+
 // Component: Drum Machine
 export default function DrumMachine() {
 	return (
 		<div id="drum-machine">
 			<div id="drum-pads">
 				{drumSounds.map((drumSound) => (
-					<DrumButton key={drumSound.soundKey} {...drumSound} />
+					<DrumButton
+						key={drumSound.soundKey}
+						{...drumSound}
+						handlePlaySound={() => playSound(drumSound.soundKey)}
+					/>
 				))}
 			</div>
 			<div id="display">Display</div>
@@ -36,30 +51,24 @@ export default function DrumMachine() {
 }
 
 // Component: Drum Button
-type DrumButtonProps = DrumSound;
+type DrumButtonProps = DrumSound & { handlePlaySound: () => void };
 function DrumButton(props: DrumButtonProps) {
-	const { soundName, soundSrc, soundKey } = props;
+	const { soundName, soundSrc, soundKey, handlePlaySound: onPlaySound } = props;
 
-	useEffect(() => {
-		const body = document.querySelector('body') as HTMLBodyElement;
-		body.addEventListener('keydown', handlePlaySoundKey);
+	// useEffect(() => {
+	// 	const body = document.querySelector('body') as HTMLBodyElement;
+	// 	body.addEventListener('keydown', handlePlaySoundKey);
 
-		// Clean up
-		return () => body.removeEventListener('keydown', handlePlaySoundKey);
-	}, []);
+	// 	// Clean up
+	// 	return () => body.removeEventListener('keydown', handlePlaySoundKey);
+	// }, []);
 
-	function handlePlaySound() {
-		const sound = document.getElementById(soundKey) as HTMLAudioElement;
-		sound.currentTime = 0;
-		sound.play();
-	}
-
-	function handlePlaySoundKey(event: KeyboardEvent) {
-		if (event.key === soundKey) handlePlaySound();
-	}
+	// function handlePlaySoundKey(event: KeyboardEvent) {
+	// 	if (event.key === soundKey) handlePlaySound();
+	// }
 
 	return (
-		<button id={soundName} className="drum-pad" onClick={handlePlaySound}>
+		<button id={soundName} className="drum-pad" onClick={onPlaySound}>
 			<audio id={soundKey} className="clip" src={soundSrc}></audio>
 			{soundKey}
 		</button>
