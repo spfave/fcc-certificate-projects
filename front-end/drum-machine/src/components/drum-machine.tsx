@@ -1,3 +1,7 @@
+import { useEffect } from 'react';
+
+import './drum-machine.css';
+
 type DrumSound = {
 	soundName: string;
 	soundSrc: string;
@@ -5,10 +9,8 @@ type DrumSound = {
 };
 
 const DrumSounds: DrumSound[] = [
-	{ soundName: 'Heater 1', soundSrc: 'audio/Heater-1.mp3', soundKey: 'Q' },
+	{ soundName: 'Heater 1', soundSrc: 'audio/Heater-1.mp3', soundKey: 'q' },
 ];
-
-import './drum-machine.css';
 
 // Component: Drum Machine
 export default function DrumMachine() {
@@ -27,10 +29,20 @@ type DrumButtonProps = DrumSound;
 function DrumButton(props: DrumButtonProps) {
 	const { soundName, soundSrc, soundKey } = props;
 
+	useEffect(() => {
+		const body = document.querySelector('body') as HTMLBodyElement;
+		body.addEventListener('keydown', handlePlaySoundKey);
+		return () => body.removeEventListener('keydown', handlePlaySoundKey);
+	}, []);
+
 	function handlePlaySound() {
 		const sound = document.getElementById(soundKey) as HTMLAudioElement;
 		sound.currentTime = 0;
 		sound.play();
+	}
+
+	function handlePlaySoundKey(event: KeyboardEvent) {
+		if (event.key === soundKey) handlePlaySound();
 	}
 
 	return (
