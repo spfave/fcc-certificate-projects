@@ -1,4 +1,10 @@
 #drum-machine {
+	& #drum-pads {
+		display: grid;
+		gap: 0.5rem;
+		grid-template-columns: repeat(3, 1fr);
+	}
+
 	& .drum-pad {
 		text-transform: uppercase;
 	}
