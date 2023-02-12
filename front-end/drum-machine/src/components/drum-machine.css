@@ -8,4 +8,8 @@
 	& .drum-pad {
 		text-transform: uppercase;
 	}
+
+	& #display {
+		text-align: center;
+	}
 }

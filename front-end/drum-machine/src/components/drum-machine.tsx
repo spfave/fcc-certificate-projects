@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import './drum-machine.css';
 
@@ -35,6 +35,8 @@ function playKeySound(event: KeyboardEvent) {
 
 // Component: Drum Machine
 export default function DrumMachine() {
+	const [displaySound, setDisplaySound] = useState('');
+
 	useEffect(() => {
 		window.addEventListener('keydown', playKeySound);
 
@@ -42,6 +44,10 @@ export default function DrumMachine() {
 		return () => window.removeEventListener('keydown', playKeySound);
 	}, []);
 
+	function handlePlaySound(sound: DrumSound) {
+		playSound(sound.soundKey);
+		setDisplaySound(sound.soundName);
+	}
 	return (
 		<div id="drum-machine">
 			<div id="drum-pads">
@@ -49,11 +55,11 @@ export default function DrumMachine() {
 					<DrumButton
 						key={drumSound.soundKey}
 						{...drumSound}
-						handlePlaySound={() => playSound(drumSound.soundKey)}
+						handlePlaySound={() => handlePlaySound(drumSound)}
 					/>
 				))}
 			</div>
-			<div id="display">Display</div>
+			<div id="display">{displaySound}</div>
 		</div>
 	);
 }
