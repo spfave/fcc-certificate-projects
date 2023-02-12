@@ -52,17 +52,26 @@ export default function DrumMachine() {
 
 	return (
 		<div id="drum-machine">
-			<div id="drum-pads">
-				{[...drumSounds.entries()].map(([soundKey, drumSound]) => (
-					<DrumButton
-						key={drumSound.soundName}
-						soundKey={soundKey}
-						{...drumSound}
-						handlePlaySound={() => handlePlaySound(soundKey)}
-					/>
-				))}
-			</div>
+			<DrumBoard handlePlaySound={handlePlaySound} />
 			<div id="display">{displaySound}</div>
+		</div>
+	);
+}
+// Component: Drum Board
+type DrumBoardProps = { handlePlaySound: (soundKey: string) => void };
+function DrumBoard(props: DrumBoardProps) {
+	const { handlePlaySound } = props;
+
+	return (
+		<div id="drum-board">
+			{[...drumSounds.entries()].map(([soundKey, drumSound]) => (
+				<DrumButton
+					key={drumSound.soundName}
+					soundKey={soundKey}
+					{...drumSound}
+					handlePlaySound={() => handlePlaySound(soundKey)}
+				/>
+			))}
 		</div>
 	);
 }
@@ -70,10 +79,10 @@ export default function DrumMachine() {
 // Component: Drum Button
 type DrumButtonProps = DrumSound & { soundKey: string; handlePlaySound: () => void };
 function DrumButton(props: DrumButtonProps) {
-	const { soundName, soundSrc, soundKey, handlePlaySound: onPlaySound } = props;
+	const { soundName, soundSrc, soundKey, handlePlaySound } = props;
 
 	return (
-		<button id={soundName} className="drum-pad" onClick={onPlaySound}>
+		<button id={soundName} className="drum-pad" onClick={handlePlaySound}>
 			<audio id={soundKey} className="clip" src={soundSrc}></audio>
 			{soundKey}
 		</button>
