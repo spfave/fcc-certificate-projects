@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import './drum-machine.css';
 
@@ -31,22 +31,24 @@ function playSound(soundKey: string) {
 export default function DrumMachine() {
 	const [displaySound, setDisplaySound] = useState('');
 
-	useEffect(() => {
-		window.addEventListener('keydown', handlePlayKeySound);
-
-		// Clean up
-		return () => window.removeEventListener('keydown', handlePlayKeySound);
-	}, []);
-
 	function handlePlaySound(soundKey: string) {
 		playSound(soundKey);
 		setDisplaySound((drumSounds.get(soundKey) as DrumSound).soundName);
 	}
 
-	function handlePlayKeySound({ key }: KeyboardEvent) {
+	// Memoize for useEffect dependency
+	const handlePlayKeySound = useCallback(({ key }: KeyboardEvent) => {
 		const uKey = key.toUpperCase();
 		if (drumSounds.has(uKey)) handlePlaySound(uKey);
-	}
+	}, []);
+
+	// Add keydown event listener
+	useEffect(() => {
+		window.addEventListener('keydown', handlePlayKeySound);
+
+		// Clean up
+		return () => window.removeEventListener('keydown', handlePlayKeySound);
+	}, [handlePlayKeySound]);
 
 	return (
 		<div id="drum-machine">
