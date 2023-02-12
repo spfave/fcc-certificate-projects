@@ -29,6 +29,7 @@ function DrumButton(props: DrumButtonProps) {
 
 	function handlePlaySound() {
 		const sound = document.getElementById(soundKey) as HTMLAudioElement;
+		sound.currentTime = 0;
 		sound.play();
 	}
 
