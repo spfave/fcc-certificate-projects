@@ -23,4 +23,5 @@ main {
 	display: grid;
 	place-items: center;
 	min-height: 100dvh;
+	background: radial-gradient(circle, var(--color1) 0%, var(--color2) 100%);
 }

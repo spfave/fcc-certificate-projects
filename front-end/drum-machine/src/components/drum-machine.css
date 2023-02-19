@@ -1,19 +1,38 @@
 #drum-machine {
+	padding: 2rem;
+	background-color: #f0f0f0;
+	border-radius: 0.5rem;
+
 	& #drum-board {
 		display: grid;
 		gap: 0.5rem;
 		grid-template-columns: repeat(3, 1fr);
 
 		& .drum-pad {
+			width: 5rem;
+			height: 4rem;
+			background-color: var(--color2-light);
+			border: none;
+			border-radius: 0.25rem;
 			text-transform: uppercase;
+			font-weight: bold;
 		}
 	}
 
 	& #display {
+		background-color: var(--color1-light);
+		padding: 0.5rem 0;
 		text-align: center;
+		font-weight: bold;
+		border-radius: 0.25rem;
 
 		&::before {
 			content: '\feff';
 		}
 	}
+}
+
+input[type='range'] {
+	width: 100%;
+	accent-color: var(--color2-light);
 }
