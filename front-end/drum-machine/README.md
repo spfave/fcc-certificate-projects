@@ -1,7 +1,7 @@
 # **Drum Machine**
 
 ## **Demo**
-<!-- [StackBlitz](https://stackblitz.com/edit/spf-fcc-fe-drum-machine) -->
+[StackBlitz](https://stackblitz.com/edit/spf-fcc-fe-drum-machine)
 
 ## **Objective**
 Build an app that is functionally similar to this: https://drum-machine.freecodecamp.rocks/.
@@ -23,3 +23,7 @@ User Story #5: When I click on a .drum-pad element, the audio clip contained in 
 User Story #6: When I press the trigger key associated with each .drum-pad, the audio clip contained in its child audio element should be triggered (e.g. pressing the Q key should trigger the drum pad which contains the string Q, pressing the W key should trigger the drum pad which contains the string W, etc.).
 
 User Story #7: When a .drum-pad is triggered, a string describing the associated audio clip is displayed as the inner text of the #display element (each string must be unique).
+
+## **Notes**
+- [TS get Map keys as type](https://stackoverflow.com/questions/72349213/is-it-possible-to-extract-map-keys-as-type-in-typescript)
+- [TS useEventListener hook](https://usehooks-ts.com/react-hook/use-event-listener)
