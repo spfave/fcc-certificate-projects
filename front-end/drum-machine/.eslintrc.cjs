@@ -23,5 +23,10 @@ module.exports = {
 		'react-hooks/rules-of-hooks': 'error', // Checks rules of hooks
 		'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
 	},
-	overrides: [],
+	overrides: [
+		{
+			files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+			extends: ['plugin:jest-dom/recommended', 'plugin:testing-library/react'],
+		},
+	],
 };
