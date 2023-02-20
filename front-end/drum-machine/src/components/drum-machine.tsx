@@ -60,7 +60,9 @@ export default function DrumMachine() {
 	return (
 		<div id="drum-machine">
 			<DrumBoard handlePlaySound={handlePlaySound} />
-			<p id="display">{displaySound}</p>
+			<p id="display" data-testid="sound-display">
+				{displaySound}
+			</p>
 			<div id="drum-controls">
 				<label htmlFor="volume" />
 				<input
