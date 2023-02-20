@@ -1,0 +1,27 @@
+@import '~/styles/variables';
+
+/* index.css - resets */
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	margin: 0;
+	min-width: var(--min-width);
+}
+
+a {
+	text-decoration: none;
+}
+
+/* App */
+main {
+	display: grid;
+	place-items: center;
+	min-height: 100dvh;
+	background: radial-gradient(circle, var(--color1) 0%, var(--color2) 100%);
+}
