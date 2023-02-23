@@ -17,3 +17,10 @@ body {
 a {
 	text-decoration: none;
 }
+
+/* App */
+main {
+	display: grid;
+	place-items: center;
+	min-height: 100dvh;
+}

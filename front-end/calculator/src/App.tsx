@@ -1,3 +1,9 @@
+import Calculator from '~/components/calculator';
+
 export default function App() {
-	return <main>app</main>;
+	return (
+		<main>
+			<Calculator />
+		</main>
+	);
 }

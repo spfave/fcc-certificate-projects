@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+.calculator {
+	width: var(--min-width);
+	font-family: 'Orbitron', sans-serif;
+	background-color: orange;
+
+	& .display-input,
+	& .display-output {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		height: 3rem;
+		background-color: black;
+		color: white;
+		padding-right: 0.5rem;
+		font-size: 1.5rem;
+		font-weight: bold;
+	}
+
+	& .buttons {
+		display: grid;
+		gap: 2px;
+		grid-template-columns: repeat(4, 1fr);
+		grid-template-rows: repeat(5, 5rem);
+		grid-template-areas:
+			'clear clear divide multiply'
+			'seven eight nine subtract'
+			'four five six add'
+			'one two three equals'
+			'zero zero decimal equals';
+
+		& #clear {
+			grid-area: clear;
+		}
+		& #zero {
+			grid-area: zero;
+		}
+		& #equals {
+			grid-area: equals;
+		}
+
+		& button {
+			font-family: inherit;
+			font-size: 1.5rem;
+			font-weight: bold;
+			background-color: lightgrey;
+			border: none;
+		}
+	}
+}
