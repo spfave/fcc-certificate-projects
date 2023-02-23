@@ -4,14 +4,20 @@ import './calculator.css';
 
 // Component: Calculator
 export default function Calculator() {
-	const [input, setInput] = useState('1+2');
-	const [output, setOutput] = useState(1234567890);
+	const [input, setInput] = useState('1*2.2');
+	const [output, setOutput] = useState(0);
 
 	// function updateInput(input: string) {}
 
 	function evaluate() {
-		const result = eval(input);
-		setOutput(result);
+		try {
+			const result = eval(input);
+			if (typeof result === 'number') setOutput(result);
+			else setInput('NaN');
+		} catch (error) {
+			setInput('Invalid computation');
+			console.error(error);
+		}
 	}
 
 	return (
