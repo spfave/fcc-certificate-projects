@@ -1,11 +1,24 @@
+import {useState} from 'react';
+
 import './calculator.css';
 
+// Component: Calculator
 export default function Calculator() {
+	const [input, setInput] = useState('1+2');
+	const [output, setOutput] = useState(1234567890);
+
+	// function updateInput(input: string) {}
+
+	function evaluate() {
+		const result = eval(input);
+		setOutput(result);
+	}
+
 	return (
 		<div className="calculator">
-			<div className="display-input">0</div>
+			<div className="display-input">{input}</div>
 			<div className="display-output" id="display">
-				0123456789
+				{output}
 			</div>
 			<div className="buttons">
 				<button id="clear">AC</button>
@@ -22,7 +35,9 @@ export default function Calculator() {
 				<button id="one">1</button>
 				<button id="two">2</button>
 				<button id="three">3</button>
-				<button id="equals"> =</button>
+				<button id="equals" onClick={evaluate}>
+					=
+				</button>
 				<button id="zero">0</button>
 				<button id="decimal">.</button>
 			</div>
