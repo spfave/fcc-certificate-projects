@@ -46,6 +46,10 @@
 			font-weight: bold;
 			background-color: lightgrey;
 			border: none;
+
+			&:active {
+				background-color: darkgray;
+			}
 		}
 	}
 }
