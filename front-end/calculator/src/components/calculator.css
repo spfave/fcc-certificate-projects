@@ -10,7 +10,7 @@
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
-		height: 3rem;
+		height: 4rem;
 		background-color: black;
 		color: white;
 		padding-right: 0.5rem;
@@ -41,11 +41,14 @@
 		}
 
 		& button {
-			font-family: inherit;
 			font-size: 1.5rem;
 			font-weight: bold;
 			background-color: lightgrey;
 			border: none;
+
+			&.text {
+				font-family: inherit;
+			}
 
 			&:active {
 				background-color: darkgray;
