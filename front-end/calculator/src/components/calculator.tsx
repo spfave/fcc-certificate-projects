@@ -2,6 +2,9 @@ import {useState} from 'react';
 
 import './calculator.css';
 
+// Data
+// type button = {text: '',}
+
 // Component: Calculator
 export default function Calculator() {
 	const [input, setInput] = useState('1*2.2');
@@ -27,44 +30,44 @@ export default function Calculator() {
 				{output}
 			</div>
 			<div className="buttons">
-				<button className="text" id="clear">
+				<button id="clear" className="text">
 					AC
 				</button>
 				<button id="divide">&divide;</button>
 				<button id="multiply">&times;</button>
-				<button className="text" id="seven">
+				<button id="seven" className="text">
 					7
 				</button>
-				<button className="text" id="eight">
+				<button id="eight" className="text">
 					8
 				</button>
-				<button className="text" id="nine">
+				<button id="nine" className="text">
 					9
 				</button>
 				<button id="subtract">&minus;</button>
-				<button className="text" id="four">
+				<button id="four" className="text">
 					4
 				</button>
-				<button className="text" id="five">
+				<button id="five" className="text">
 					5
 				</button>
-				<button className="text" id="six">
+				<button id="six" className="text">
 					6
 				</button>
 				<button id="add">+</button>
-				<button className="text" id="one">
+				<button id="one" className="text">
 					1
 				</button>
-				<button className="text" id="two">
+				<button id="two" className="text">
 					2
 				</button>
-				<button className="text" id="three">
+				<button id="three" className="text">
 					3
 				</button>
 				<button id="equals" onClick={evaluate}>
 					=
 				</button>
-				<button className="text" id="zero">
+				<button id="zero" className="text">
 					0
 				</button>
 				<button id="decimal">.</button>
