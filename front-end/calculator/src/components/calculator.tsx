@@ -24,6 +24,11 @@ export default function Calculator() {
 
 	// function updateInput(input: string) {}
 
+	function handleClear() {
+		setInput('');
+		setOutput(0);
+	}
+
 	function handleEvaluate() {
 		const result = evaluate(input);
 
@@ -38,7 +43,7 @@ export default function Calculator() {
 				{output}
 			</div>
 			<div className="buttons">
-				<button id="clear" className="text">
+				<button id="clear" className="text" onClick={handleClear}>
 					AC
 				</button>
 				<button id="divide">&divide;</button>
