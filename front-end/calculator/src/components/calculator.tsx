@@ -3,7 +3,19 @@ import {useState} from 'react';
 import './calculator.css';
 
 // Data
-// type button = {text: '',}
+// type button = {display: '', type: 'number' | 'operation'}
+
+// Utility functions
+function evaluate(input: string) {
+	try {
+		const result = eval(input);
+		if (typeof result === 'number') return result;
+		return 'NaN';
+	} catch (error) {
+		console.error(error);
+		return 'Invalid computation';
+	}
+}
 
 // Component: Calculator
 export default function Calculator() {
@@ -12,15 +24,11 @@ export default function Calculator() {
 
 	// function updateInput(input: string) {}
 
-	function evaluate() {
-		try {
-			const result = eval(input);
-			if (typeof result === 'number') setOutput(result);
-			else setInput('NaN');
-		} catch (error) {
-			setInput('Invalid computation');
-			console.error(error);
-		}
+	function handleEvaluate() {
+		const result = evaluate(input);
+
+		if (typeof result === 'number') setOutput(result);
+		else setInput(result);
 	}
 
 	return (
@@ -64,7 +72,7 @@ export default function Calculator() {
 				<button id="three" className="text">
 					3
 				</button>
-				<button id="equals" onClick={evaluate}>
+				<button id="equals" onClick={handleEvaluate}>
 					=
 				</button>
 				<button id="zero" className="text">
