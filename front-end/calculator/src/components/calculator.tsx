@@ -3,7 +3,7 @@ import {useState} from 'react';
 import './calculator.css';
 
 // Data
-// type button = {display: '', type: 'number' | 'operation'}
+// type button = {display: '', type: 'number' | 'operator' | 'clear' | 'equal'}
 
 // Utility functions
 function evaluate(input: string) {
@@ -42,48 +42,58 @@ export default function Calculator() {
 			<div className="display-output" id="display">
 				{output}
 			</div>
-			<div className="buttons">
-				<button id="clear" className="text" onClick={handleClear}>
+			<div className="keypad">
+				<button id="clear" data-clear onClick={handleClear}>
 					AC
 				</button>
-				<button id="divide">&divide;</button>
-				<button id="multiply">&times;</button>
-				<button id="seven" className="text">
+				<button id="divide" data-operator>
+					&divide;
+				</button>
+				<button id="multiply" data-operator>
+					&times;
+				</button>
+				<button id="seven" data-number>
 					7
 				</button>
-				<button id="eight" className="text">
+				<button id="eight" data-number>
 					8
 				</button>
-				<button id="nine" className="text">
+				<button id="nine" data-number>
 					9
 				</button>
-				<button id="subtract">&minus;</button>
-				<button id="four" className="text">
+				<button id="subtract" data-operator>
+					&minus;
+				</button>
+				<button id="four" data-number>
 					4
 				</button>
-				<button id="five" className="text">
+				<button id="five" data-number>
 					5
 				</button>
-				<button id="six" className="text">
+				<button id="six" data-number>
 					6
 				</button>
-				<button id="add">+</button>
-				<button id="one" className="text">
+				<button id="add" data-operator>
+					+
+				</button>
+				<button id="one" data-number>
 					1
 				</button>
-				<button id="two" className="text">
+				<button id="two" data-number>
 					2
 				</button>
-				<button id="three" className="text">
+				<button id="three" data-number>
 					3
 				</button>
-				<button id="equals" onClick={handleEvaluate}>
+				<button id="equals" data-equal onClick={handleEvaluate}>
 					=
 				</button>
-				<button id="zero" className="text">
+				<button id="zero" data-number>
 					0
 				</button>
-				<button id="decimal">.</button>
+				<button id="decimal" data-number>
+					.
+				</button>
 			</div>
 		</div>
 	);

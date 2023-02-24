@@ -1,7 +1,6 @@
 .calculator {
 	width: var(--min-width);
 	font-family: 'Orbitron', sans-serif;
-	background-color: orange;
 	border: solid black 5px;
 
 	& .display-input,
@@ -17,7 +16,7 @@
 		font-weight: bold;
 	}
 
-	& .buttons {
+	& .keypad {
 		display: grid;
 		gap: 2px;
 		grid-template-columns: repeat(4, 1fr);
@@ -29,28 +28,59 @@
 			'one two three equals'
 			'zero zero decimal equals';
 
-		& #clear {
-			grid-area: clear;
-		}
-		& #zero {
-			grid-area: zero;
-		}
-		& #equals {
-			grid-area: equals;
-		}
-
 		& button {
+			border: none;
 			font-size: 1.5rem;
 			font-weight: bold;
-			background-color: lightgrey;
-			border: none;
 
-			&.text {
+			&[data-number] {
+				background-color: color(grey tint(90%));
 				font-family: inherit;
+				&:hover {
+					background-color: color(grey tint(70%));
+				}
+				&:active {
+					background-color: color(grey tint(50%));
+				}
 			}
 
-			&:active {
-				background-color: darkgray;
+			&[data-operator] {
+				background-color: lightgray;
+				&:hover {
+					background-color: color(lightgray shade(10%));
+				}
+				&:active {
+					background-color: color(lightgray shade(20%));
+				}
+			}
+
+			&#zero {
+				grid-area: zero;
+			}
+
+			&#clear {
+				grid-area: clear;
+				background-color: lightblue;
+				font-family: inherit;
+
+				&:hover {
+					background-color: color(lightblue shade(10%));
+				}
+				&:active {
+					background-color: color(lightblue shade(20%));
+				}
+			}
+
+			&#equals {
+				grid-area: equals;
+				background-color: orange;
+
+				&:hover {
+					background-color: color(orange shade(10%));
+				}
+				&:active {
+					background-color: color(orange shade(20%));
+				}
 			}
 		}
 	}
