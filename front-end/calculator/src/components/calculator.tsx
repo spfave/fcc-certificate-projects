@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useReducer} from 'react';
 
 import './calculator.css';
 
@@ -17,23 +17,50 @@ function evaluate(input: string) {
 	}
 }
 
+// Calculator Reducer
+type CalculatorState = {
+	input: string;
+	output: number;
+};
+type CalculatorActions =
+	| {type: 'CLEAR'}
+	| {type: 'EVALUATE'}
+	| {type: 'ENTER_NUMBER'; payload: string}
+	| {type: 'ENTER_OPERATOR'; payload: string};
+
+const calculatorInitialState: CalculatorState = {input: '', output: 0};
+
+function calculatorReducer(
+	state: CalculatorState,
+	action: CalculatorActions,
+): CalculatorState {
+	switch (action.type) {
+		case 'CLEAR':
+			return calculatorInitialState;
+		case 'EVALUATE': {
+			const result = evaluate(state.input);
+			if (typeof result === 'number') return {...state, output: result};
+			else return {...state, input: result};
+		}
+		default:
+			return state;
+	}
+}
+
 // Component: Calculator
 export default function Calculator() {
-	const [input, setInput] = useState('1*2.2');
-	const [output, setOutput] = useState(0);
-
-	// function updateInput(input: string) {}
+	const [{input, output}, calcDispatch] = useReducer(
+		calculatorReducer,
+		{input: '1 + 12', output: 0}, //testing input
+		// calculatorInitialState,
+	);
 
 	function handleClear() {
-		setInput('');
-		setOutput(0);
+		calcDispatch({type: 'CLEAR'});
 	}
 
 	function handleEvaluate() {
-		const result = evaluate(input);
-
-		if (typeof result === 'number') setOutput(result);
-		else setInput(result);
+		calcDispatch({type: 'EVALUATE'});
 	}
 
 	return (
