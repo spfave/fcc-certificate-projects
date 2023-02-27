@@ -70,10 +70,10 @@ export default function Calculator() {
 				{output}
 			</div>
 			<div className="keypad">
-				<button id="clear" data-clear onClick={handleClear}>
+				<button id="clear" style={{gridArea: 'clear'}} data-clear onClick={handleClear}>
 					AC
 				</button>
-				<button id="divide" data-operator>
+				<button id="divide" data-operator onClick={handleEnterOperator}>
 					&divide;
 				</button>
 				<button id="multiply" data-operator>
@@ -112,10 +112,15 @@ export default function Calculator() {
 				<button id="three" data-number>
 					3
 				</button>
-				<button id="equals" data-equal onClick={handleEvaluate}>
+				<button
+					id="equals"
+					style={{gridArea: 'equals'}}
+					data-equal
+					onClick={handleEvaluate}
+				>
 					=
 				</button>
-				<button id="zero" data-number>
+				<button id="zero" style={{gridArea: 'zero'}} data-number>
 					0
 				</button>
 				<button id="decimal" data-number>

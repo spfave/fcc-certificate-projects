@@ -16,6 +16,10 @@
 		font-weight: bold;
 	}
 
+	& .display-input {
+		color: orange;
+	}
+
 	& .keypad {
 		display: grid;
 		gap: 2px;
@@ -32,6 +36,7 @@
 			border: none;
 			font-size: 1.5rem;
 			font-weight: bold;
+			/* grid-area: attr(data-grid-area); Possible future solution*/
 
 			&[data-number] {
 				background-color: color(grey tint(90%));
@@ -54,12 +59,7 @@
 				}
 			}
 
-			&#zero {
-				grid-area: zero;
-			}
-
 			&#clear {
-				grid-area: clear;
 				background-color: lightblue;
 				font-family: inherit;
 
@@ -72,7 +72,6 @@
 			}
 
 			&#equals {
-				grid-area: equals;
 				background-color: orange;
 
 				&:hover {
