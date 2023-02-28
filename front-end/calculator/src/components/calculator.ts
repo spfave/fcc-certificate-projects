@@ -22,5 +22,9 @@ export class Calculator {
 		}
 	}
 
-	// clear() {}
+	clear() {
+		this.#input = '';
+		this.#output = 0;
+		return {input: this.#input, output: this.#output};
+	}
 }

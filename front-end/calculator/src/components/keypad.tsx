@@ -56,7 +56,7 @@ function calculatorReducer(state: CalculatorState, action: CalculatorActions) {
 			else return {...state, input: result};
 		}
 		case 'CLEAR':
-			return calculatorInitialState;
+			return calculator.clear();
 		default:
 			return state;
 	}
@@ -69,13 +69,6 @@ export default function Keypad() {
 		{input: '1 + 12', output: 0}, //testing input
 		// calculatorInitialState,
 	);
-
-	// function handleEvaluate() {
-	// 	calcDispatch({type: 'EVALUATE'});
-	// }
-	// function handleClear() {
-	// 	calcDispatch({type: 'CLEAR'});
-	// }
 
 	// function handleEnterNumber(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 	// 	// event.currentTarget;
