@@ -7,7 +7,7 @@ type KeypadButton = {
 	display: string;
 	type: 'action' | 'number' | 'operator';
 };
-const keypadButtons: Map<string, KeypadButton> = new Map([
+const KEYPAD_BUTTONS: Map<string, KeypadButton> = new Map([
 	['clear', {display: 'AC', type: 'action'}],
 	['one', {display: '1', type: 'number'}],
 	['two', {display: '2', type: 'number'}],
@@ -26,6 +26,8 @@ const keypadButtons: Map<string, KeypadButton> = new Map([
 	['divide', {display: '÷', type: 'operator'}],
 	['equals', {display: '=', type: 'operator'}],
 ]);
+const NUMBERS = '1234567890';
+const OPERATORS = '+−×÷';
 
 // Utility functions
 function evaluate(input: string) {
@@ -74,12 +76,29 @@ export default function Calculator() {
 		// calculatorInitialState,
 	);
 
-	function handleClear() {
-		calcDispatch({type: 'CLEAR'});
-	}
+	// function handleEvaluate() {
+	// 	calcDispatch({type: 'EVALUATE'});
+	// }
+	// function handleClear() {
+	// 	calcDispatch({type: 'CLEAR'});
+	// }
 
-	function handleEvaluate() {
-		calcDispatch({type: 'EVALUATE'});
+	// function handleEnterNumber(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+	// 	// event.currentTarget;
+	// }
+
+	// function handleEnterOperator(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+	// 	console.info(`event: `, event); //LOG
+	// 	console.info(`event.target: `, event.target); //LOG
+	// 	console.info(`event.currentTarget: `, event.currentTarget); //LOG
+	// }
+
+	function handleKeyClick(key: string) {
+		if (NUMBERS.includes(key)) calcDispatch({type: 'ENTER_NUMBER', number: key});
+		else if (OPERATORS.includes(key))
+			calcDispatch({type: 'ENTER_OPERATOR', operator: key});
+		else if (key === '=') calcDispatch({type: 'EVALUATE'});
+		else if (key === 'AC') calcDispatch({type: 'CLEAR'});
 	}
 
 	return (
@@ -88,17 +107,25 @@ export default function Calculator() {
 			<div className="display-output" id="display">
 				{output}
 			</div>
-			<Keypad />
+			<Keypad handleKeyClick={handleKeyClick} />
 		</div>
 	);
 }
 
-type KeypadProps = {temp?: null};
+type KeypadProps = {handleKeyClick: (key: string) => void};
 function Keypad(props: KeypadProps) {
+	const {handleKeyClick} = props;
+
 	return (
 		<div className="keypad">
-			{[...keypadButtons.entries()].map(([key, btn]) => (
-				<button key={key} id={key} style={{gridArea: key}} data-type={btn.type}>
+			{[...KEYPAD_BUTTONS.entries()].map(([key, btn]) => (
+				<button
+					key={key}
+					id={key}
+					style={{gridArea: key}}
+					data-type={btn.type}
+					onClick={() => handleKeyClick(btn.display)}
+				>
 					{btn.display}
 				</button>
 			))}
