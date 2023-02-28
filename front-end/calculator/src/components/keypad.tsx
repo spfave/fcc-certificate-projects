@@ -1,5 +1,7 @@
 import {useReducer} from 'react';
 
+import {Calculator} from './calculator';
+
 import './keypad.css';
 
 // Data
@@ -29,18 +31,6 @@ const KEYPAD_BUTTONS: Map<string, KeypadButton> = new Map([
 const NUMBERS = '1234567890';
 const OPERATORS = '+−×÷';
 
-// Utility functions
-function evaluate(input: string) {
-	try {
-		const result = eval(input);
-		if (typeof result === 'number') return result;
-		return 'NaN';
-	} catch (error) {
-		console.error(error);
-		return 'Invalid computation';
-	}
-}
-
 // Calculator Reducer
 type CalculatorState = {
 	input: string;
@@ -55,11 +45,13 @@ type CalculatorActions =
 const calculatorInitialState: CalculatorState = {input: '', output: 0};
 
 function calculatorReducer(state: CalculatorState, action: CalculatorActions) {
+	const calculator = new Calculator(state.input, state.output);
+
 	switch (action.type) {
 		case 'ENTER_NUMBER':
 		case 'ENTER_OPERATOR':
 		case 'EVALUATE': {
-			const result = evaluate(state.input);
+			const result = calculator.evaluate();
 			if (typeof result === 'number') return {...state, output: result};
 			else return {...state, input: result};
 		}
