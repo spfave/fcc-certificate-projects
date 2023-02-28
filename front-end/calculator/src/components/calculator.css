@@ -38,7 +38,7 @@
 			font-weight: bold;
 			/* grid-area: attr(data-grid-area); Possible future solution*/
 
-			&[data-number] {
+			&[data-type='number'] {
 				background-color: color(grey tint(90%));
 				font-family: inherit;
 				&:hover {
@@ -49,7 +49,7 @@
 				}
 			}
 
-			&[data-operator] {
+			&[data-type='operator'] {
 				background-color: lightgray;
 				&:hover {
 					background-color: color(lightgray shade(10%));

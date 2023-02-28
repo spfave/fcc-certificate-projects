@@ -3,7 +3,29 @@ import {useReducer} from 'react';
 import './calculator.css';
 
 // Data
-// type button = {display: '', type: 'number' | 'operator' | 'clear' | 'equal'}
+type KeypadButton = {
+	display: string;
+	type: 'action' | 'number' | 'operator';
+};
+const keypadButtons: Map<string, KeypadButton> = new Map([
+	['clear', {display: 'AC', type: 'action'}],
+	['one', {display: '1', type: 'number'}],
+	['two', {display: '2', type: 'number'}],
+	['three', {display: '3', type: 'number'}],
+	['four', {display: '4', type: 'number'}],
+	['five', {display: '5', type: 'number'}],
+	['six', {display: '6', type: 'number'}],
+	['seven', {display: '7', type: 'number'}],
+	['eight', {display: '8', type: 'number'}],
+	['nine', {display: '9', type: 'number'}],
+	['zero', {display: '0', type: 'number'}],
+	['decimal', {display: '.', type: 'number'}],
+	['add', {display: '+', type: 'operator'}],
+	['subtract', {display: '−', type: 'operator'}],
+	['multiply', {display: '×', type: 'operator'}],
+	['divide', {display: '÷', type: 'operator'}],
+	['equals', {display: '=', type: 'operator'}],
+]);
 
 // Utility functions
 function evaluate(input: string) {
@@ -30,10 +52,7 @@ type CalculatorActions =
 
 const calculatorInitialState: CalculatorState = {input: '', output: 0};
 
-function calculatorReducer(
-	state: CalculatorState,
-	action: CalculatorActions,
-): CalculatorState {
+function calculatorReducer(state: CalculatorState, action: CalculatorActions) {
 	switch (action.type) {
 		case 'CLEAR':
 			return calculatorInitialState;
@@ -69,64 +88,20 @@ export default function Calculator() {
 			<div className="display-output" id="display">
 				{output}
 			</div>
-			<div className="keypad">
-				<button id="clear" style={{gridArea: 'clear'}} data-clear onClick={handleClear}>
-					AC
+			<Keypad />
+		</div>
+	);
+}
+
+type KeypadProps = {temp?: null};
+function Keypad(props: KeypadProps) {
+	return (
+		<div className="keypad">
+			{[...keypadButtons.entries()].map(([key, btn]) => (
+				<button key={key} id={key} style={{gridArea: key}} data-type={btn.type}>
+					{btn.display}
 				</button>
-				<button id="divide" data-operator onClick={handleEnterOperator}>
-					&divide;
-				</button>
-				<button id="multiply" data-operator>
-					&times;
-				</button>
-				<button id="seven" data-number>
-					7
-				</button>
-				<button id="eight" data-number>
-					8
-				</button>
-				<button id="nine" data-number>
-					9
-				</button>
-				<button id="subtract" data-operator>
-					&minus;
-				</button>
-				<button id="four" data-number>
-					4
-				</button>
-				<button id="five" data-number>
-					5
-				</button>
-				<button id="six" data-number>
-					6
-				</button>
-				<button id="add" data-operator>
-					+
-				</button>
-				<button id="one" data-number>
-					1
-				</button>
-				<button id="two" data-number>
-					2
-				</button>
-				<button id="three" data-number>
-					3
-				</button>
-				<button
-					id="equals"
-					style={{gridArea: 'equals'}}
-					data-equal
-					onClick={handleEvaluate}
-				>
-					=
-				</button>
-				<button id="zero" style={{gridArea: 'zero'}} data-number>
-					0
-				</button>
-				<button id="decimal" data-number>
-					.
-				</button>
-			</div>
+			))}
 		</div>
 	);
 }
