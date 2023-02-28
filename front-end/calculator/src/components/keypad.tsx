@@ -1,6 +1,6 @@
 import {useReducer} from 'react';
 
-import './calculator.css';
+import './keypad.css';
 
 // Data
 type KeypadButton = {
@@ -49,27 +49,29 @@ type CalculatorState = {
 type CalculatorActions =
 	| {type: 'CLEAR'}
 	| {type: 'EVALUATE'}
-	| {type: 'ENTER_NUMBER'; payload: string}
-	| {type: 'ENTER_OPERATOR'; payload: string};
+	| {type: 'ENTER_NUMBER'; number: string}
+	| {type: 'ENTER_OPERATOR'; operator: string};
 
 const calculatorInitialState: CalculatorState = {input: '', output: 0};
 
 function calculatorReducer(state: CalculatorState, action: CalculatorActions) {
 	switch (action.type) {
-		case 'CLEAR':
-			return calculatorInitialState;
+		case 'ENTER_NUMBER':
+		case 'ENTER_OPERATOR':
 		case 'EVALUATE': {
 			const result = evaluate(state.input);
 			if (typeof result === 'number') return {...state, output: result};
 			else return {...state, input: result};
 		}
+		case 'CLEAR':
+			return calculatorInitialState;
 		default:
 			return state;
 	}
 }
 
 // Component: Calculator
-export default function Calculator() {
+export default function Keypad() {
 	const [{input, output}, calcDispatch] = useReducer(
 		calculatorReducer,
 		{input: '1 + 12', output: 0}, //testing input
@@ -107,13 +109,13 @@ export default function Calculator() {
 			<div className="display-output" id="display">
 				{output}
 			</div>
-			<Keypad handleKeyClick={handleKeyClick} />
+			<KeypadButtons handleKeyClick={handleKeyClick} />
 		</div>
 	);
 }
 
-type KeypadProps = {handleKeyClick: (key: string) => void};
-function Keypad(props: KeypadProps) {
+type KeypadButtonsProps = {handleKeyClick: (key: string) => void};
+function KeypadButtons(props: KeypadButtonsProps) {
 	const {handleKeyClick} = props;
 
 	return (

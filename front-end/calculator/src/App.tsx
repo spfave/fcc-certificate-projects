@@ -1,9 +1,9 @@
-import Calculator from '~/components/calculator';
+import Keypad from '~/components/keypad';
 
 export default function App() {
 	return (
 		<main>
-			<Calculator />
+			<Keypad />
 		</main>
 	);
 }
