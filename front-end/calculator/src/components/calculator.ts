@@ -1,19 +1,19 @@
 export class Calculator {
-	#input: string;
+	#input: string[];
 	#output: number;
 
-	constructor(input: string, output: number) {
+	constructor(input: string[], output: number) {
 		this.#input = input;
 		this.#output = output;
 	}
 
-	// enterNumber() {}
+	// enterNumber(number: string) {}
 
-	// enterOperator() {}
+	// enterOperator(opertaor: string) {}
 
 	evaluate() {
 		try {
-			this.#output = eval(this.#input);
+			this.#output = eval(this.#input.join(''));
 			if (typeof this.#output === 'number') return this.#output;
 			return 'NaN';
 		} catch (error) {
@@ -23,7 +23,7 @@ export class Calculator {
 	}
 
 	clear() {
-		this.#input = '';
+		this.#input = [];
 		this.#output = 0;
 		return {input: this.#input, output: this.#output};
 	}

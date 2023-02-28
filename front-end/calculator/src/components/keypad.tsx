@@ -33,7 +33,7 @@ const OPERATORS = '+−×÷';
 
 // Calculator Reducer
 type CalculatorState = {
-	input: string;
+	input: string[];
 	output: number;
 };
 type CalculatorActions =
@@ -42,18 +42,18 @@ type CalculatorActions =
 	| {type: 'ENTER_NUMBER'; number: string}
 	| {type: 'ENTER_OPERATOR'; operator: string};
 
-const calculatorInitialState: CalculatorState = {input: '', output: 0};
+const calculatorInitialState: CalculatorState = {input: [], output: 0};
 
 function calculatorReducer(state: CalculatorState, action: CalculatorActions) {
 	const calculator = new Calculator(state.input, state.output);
 
 	switch (action.type) {
-		case 'ENTER_NUMBER':
-		case 'ENTER_OPERATOR':
+		// case 'ENTER_NUMBER':
+		// case 'ENTER_OPERATOR':
 		case 'EVALUATE': {
 			const result = calculator.evaluate();
 			if (typeof result === 'number') return {...state, output: result};
-			else return {...state, input: result};
+			else return {...state, input: [result]};
 		}
 		case 'CLEAR':
 			return calculator.clear();
@@ -66,7 +66,7 @@ function calculatorReducer(state: CalculatorState, action: CalculatorActions) {
 export default function Keypad() {
 	const [{input, output}, calcDispatch] = useReducer(
 		calculatorReducer,
-		{input: '1 + 12', output: 0}, //testing input
+		{input: ['1', '+', '12'], output: 0}, //testing input
 		// calculatorInitialState,
 	);
 
@@ -90,7 +90,7 @@ export default function Keypad() {
 
 	return (
 		<div className="calculator">
-			<div className="display-input">{input}</div>
+			<div className="display-input">{input.join(' ')}</div>
 			<div className="display-output" id="display">
 				{output}
 			</div>
