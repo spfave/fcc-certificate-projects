@@ -49,6 +49,8 @@ function calculatorReducer(state: CalculatorState, action: CalculatorActions) {
 	const calculator = new Calculator(state.input, state.output);
 
 	switch (action.type) {
+		case 'ENTER_NUMBER':
+			return calculator.enterNumber(action.number);
 		case 'ENTER_OPERATOR':
 			return calculator.enterOperator(action.operator);
 		case 'EVALUATE': {

@@ -7,6 +7,14 @@ export class Calculator {
 		this.#output = output;
 	}
 
+	enterNumber(number: string) {
+		const lastInput = this.#getLastInput();
+		if (!lastInput || OPERATORS.includes(lastInput)) this.#input.push(number);
+		// const test = parseFloat(lastInput)
+
+		return {input: this.#input, output: this.#output};
+	}
+
 	enterOperator(operator: string) {
 		const lastInput = this.#getLastInput();
 		if (lastInput && OPERATORS.includes(lastInput)) this.#input.splice(-1, 1, operator);
