@@ -6,8 +6,9 @@ import './keypad.css';
 
 // Data
 type KeypadButton = {
-	display: string;
 	type: 'action' | 'number' | 'operator';
+	display: string;
+	value?: string;
 };
 const KEYPAD_BUTTONS: Map<string, KeypadButton> = new Map([
 	['clear', {display: 'AC', type: 'action'}],
@@ -22,10 +23,10 @@ const KEYPAD_BUTTONS: Map<string, KeypadButton> = new Map([
 	['nine', {display: '9', type: 'number'}],
 	['zero', {display: '0', type: 'number'}],
 	['decimal', {display: '.', type: 'number'}],
-	['add', {display: '+', type: 'operator'}],
-	['subtract', {display: '−', type: 'operator'}],
-	['multiply', {display: '×', type: 'operator'}],
-	['divide', {display: '÷', type: 'operator'}],
+	['add', {display: '+', type: 'operator', value: '+'}],
+	['subtract', {display: '−', type: 'operator', value: '-'}],
+	['multiply', {display: '×', type: 'operator', value: '*'}],
+	['divide', {display: '÷', type: 'operator', value: '/'}],
 	['equals', {display: '=', type: 'operator'}],
 ]);
 const NUMBERS = '1234567890';
@@ -48,8 +49,8 @@ function calculatorReducer(state: CalculatorState, action: CalculatorActions) {
 	const calculator = new Calculator(state.input, state.output);
 
 	switch (action.type) {
-		// case 'ENTER_NUMBER':
-		// case 'ENTER_OPERATOR':
+		case 'ENTER_OPERATOR':
+			return calculator.enterOperator(action.operator);
 		case 'EVALUATE': {
 			const result = calculator.evaluate();
 			if (typeof result === 'number') return {...state, output: result};
@@ -111,7 +112,7 @@ function KeypadButtons(props: KeypadButtonsProps) {
 					id={key}
 					style={{gridArea: key}}
 					data-type={btn.type}
-					onClick={() => handleKeyClick(btn.display)}
+					onClick={() => handleKeyClick(btn.value ?? btn.display)}
 				>
 					{btn.display}
 				</button>

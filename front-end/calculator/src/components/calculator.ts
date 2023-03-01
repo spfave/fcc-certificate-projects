@@ -7,9 +7,14 @@ export class Calculator {
 		this.#output = output;
 	}
 
-	// enterNumber(number: string) {}
+	enterOperator(operator: string) {
+		const lastInput = this.#getLastInput();
+		if (lastInput && OPERATORS.includes(lastInput)) this.#input.splice(-1, 1, operator);
+		else if (lastInput) this.#input.push(operator);
+		else null;
 
-	// enterOperator(opertaor: string) {}
+		return {input: this.#input, output: this.#output};
+	}
 
 	evaluate() {
 		try {
@@ -26,5 +31,9 @@ export class Calculator {
 		this.#input = [];
 		this.#output = 0;
 		return {input: this.#input, output: this.#output};
+	}
+
+	#getLastInput() {
+		return this.#input.at(-1);
 	}
 }
