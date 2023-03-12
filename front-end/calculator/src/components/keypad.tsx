@@ -71,16 +71,6 @@ export default function Keypad() {
 		// calculatorInitialState,
 	);
 
-	// function handleEnterNumber(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-	// 	// event.currentTarget;
-	// }
-
-	// function handleEnterOperator(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-	// 	console.info(`event: `, event); //LOG
-	// 	console.info(`event.target: `, event.target); //LOG
-	// 	console.info(`event.currentTarget: `, event.currentTarget); //LOG
-	// }
-
 	function handleKeyClick(key: string) {
 		if (NUMBERS.includes(key)) calcDispatch({type: 'ENTER_NUMBER', number: key});
 		else if (OPERATORS.includes(key))
@@ -89,11 +79,15 @@ export default function Keypad() {
 		else if (key === 'AC') calcDispatch({type: 'CLEAR'});
 	}
 
+	function formatNumber(value: number) {
+		return value.toLocaleString('en', {maximumFractionDigits: 6});
+	}
+
 	return (
 		<div className="calculator">
 			<div className="display-input">{input.join(' ')}</div>
 			<div className="display-output" id="display">
-				{output}
+				{formatNumber(output)}
 			</div>
 			<KeypadButtons handleKeyClick={handleKeyClick} />
 		</div>
