@@ -1,6 +1,6 @@
 import {useReducer} from 'react';
 
-import {Calculator} from './calculator';
+import {Calculator, NUMBERS, OPERATORS} from './calculator';
 
 import './keypad.css';
 
@@ -29,8 +29,6 @@ const KEYPAD_BUTTONS: Map<string, KeypadButton> = new Map([
 	['divide', {display: '÷', type: 'operator', value: '/'}],
 	['equals', {display: '=', type: 'operator'}],
 ]);
-const NUMBERS = '1234567890';
-const OPERATORS = '+−×÷';
 
 // Calculator Reducer
 type CalculatorState = {

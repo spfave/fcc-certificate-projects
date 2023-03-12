@@ -1,3 +1,6 @@
+export const NUMBERS = '1234567890.';
+export const OPERATORS = '+-*/';
+
 export class Calculator {
 	#input: string[];
 	#output: number;
@@ -9,8 +12,16 @@ export class Calculator {
 
 	enterNumber(number: string) {
 		const lastInput = this.#getLastInput();
-		if (!lastInput || OPERATORS.includes(lastInput)) this.#input.push(number);
-		// const test = parseFloat(lastInput)
+
+		if (!lastInput || OPERATORS.includes(lastInput)) {
+			this.#input.push(number);
+		} else if (lastInput && !isNaN(parseFloat(lastInput))) {
+			if (number === '.' && lastInput.includes('.')) null;
+			else {
+				const newNumber = lastInput.concat(number);
+				this.#input.splice(-1, 1, newNumber);
+			}
+		}
 
 		return {input: this.#input, output: this.#output};
 	}
