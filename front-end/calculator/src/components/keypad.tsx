@@ -1,6 +1,6 @@
 import {useReducer} from 'react';
 
-import {Calculator, NUMBERS, OPERATORS} from './calculator';
+import {Calculator, isNumber, isOperator, NUMBERS, OPERATORS} from './calculator';
 
 import './keypad.css';
 
@@ -72,9 +72,8 @@ export default function Keypad() {
 	);
 
 	function handleKeyClick(key: string) {
-		if (NUMBERS.includes(key)) calcDispatch({type: 'ENTER_NUMBER', number: key});
-		else if (OPERATORS.includes(key))
-			calcDispatch({type: 'ENTER_OPERATOR', operator: key});
+		if (isNumber(key)) calcDispatch({type: 'ENTER_NUMBER', number: key});
+		else if (isOperator(key)) calcDispatch({type: 'ENTER_OPERATOR', operator: key});
 		else if (key === '=') calcDispatch({type: 'EVALUATE'});
 		else if (key === 'AC') calcDispatch({type: 'CLEAR'});
 	}
