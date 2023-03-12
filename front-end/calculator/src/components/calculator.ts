@@ -20,8 +20,13 @@ export class Calculator {
 	enterNumber(number: string) {
 		const lastInput = this.#getLastInput();
 
-		if (!lastInput || isOperator(lastInput)) this.#input.push(number);
-		else if (lastInput && !isNaN(parseFloat(lastInput))) {
+		// handle adding new number
+		if (!lastInput || isOperator(lastInput)) {
+			if (number === '.') this.#input.push('0.');
+			else this.#input.push(number);
+		}
+		// handle appending to last number
+		else if (!isNaN(parseFloat(lastInput))) {
 			if (number === '.' && lastInput.includes('.')) null;
 			else {
 				const newNumber = lastInput.concat(number);
