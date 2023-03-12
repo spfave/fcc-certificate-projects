@@ -1,6 +1,6 @@
 import {useReducer} from 'react';
 
-import {Calculator, isNumber, isOperator, NUMBERS, OPERATORS} from './calculator';
+import {Calculator, isInputNumber, isInputOperator} from './calculator';
 
 import './keypad.css';
 
@@ -31,31 +31,28 @@ const KEYPAD_BUTTONS: Map<string, KeypadButton> = new Map([
 ]);
 
 // Calculator Reducer
-type CalculatorState = {
-	input: string[];
-	output: number;
+type KeypadState = {
+	history: string[];
+	display: string;
 };
-type CalculatorActions =
+type KeypadActions =
 	| {type: 'CLEAR'}
 	| {type: 'EVALUATE'}
 	| {type: 'ENTER_NUMBER'; number: string}
 	| {type: 'ENTER_OPERATOR'; operator: string};
 
-const calculatorInitialState: CalculatorState = {input: [], output: 0};
+const keypadInitialState: KeypadState = {history: [], display: '0'};
 
-function calculatorReducer(state: CalculatorState, action: CalculatorActions) {
-	const calculator = new Calculator([...state.input], state.output);
+function calculatorReducer(state: KeypadState, action: KeypadActions) {
+	const calculator = new Calculator([...state.history], state.display);
 
 	switch (action.type) {
 		case 'ENTER_NUMBER':
 			return calculator.enterNumber(action.number);
 		case 'ENTER_OPERATOR':
 			return calculator.enterOperator(action.operator);
-		case 'EVALUATE': {
-			const result = calculator.evaluate();
-			if (typeof result === 'number') return {...state, output: result};
-			else return {...state, input: [result]};
-		}
+		case 'EVALUATE':
+			return calculator.evaluate();
 		case 'CLEAR':
 			return calculator.clear();
 		default:
@@ -65,28 +62,24 @@ function calculatorReducer(state: CalculatorState, action: CalculatorActions) {
 
 // Component: Calculator
 export default function Keypad() {
-	const [{input, output}, calcDispatch] = useReducer(
+	const [{history, display}, calcDispatch] = useReducer(
 		calculatorReducer,
-		{input: ['1', '+', '12'], output: 0}, //testing input
+		{history: ['1', '+', '12'], display: '0'}, //testing input
 		// calculatorInitialState,
 	);
 
 	function handleKeyClick(key: string) {
-		if (isNumber(key)) calcDispatch({type: 'ENTER_NUMBER', number: key});
-		else if (isOperator(key)) calcDispatch({type: 'ENTER_OPERATOR', operator: key});
+		if (isInputNumber(key)) calcDispatch({type: 'ENTER_NUMBER', number: key});
+		else if (isInputOperator(key)) calcDispatch({type: 'ENTER_OPERATOR', operator: key});
 		else if (key === '=') calcDispatch({type: 'EVALUATE'});
 		else if (key === 'AC') calcDispatch({type: 'CLEAR'});
 	}
 
-	function formatNumber(value: number) {
-		return value.toLocaleString('en', {maximumFractionDigits: 6});
-	}
-
 	return (
 		<div className="calculator">
-			<div className="display-input">{input.join(' ')}</div>
+			<div className="display-input">{history.join(' ')}</div>
 			<div className="display-output" id="display">
-				{formatNumber(output)}
+				{display}
 			</div>
 			<KeypadButtons handleKeyClick={handleKeyClick} />
 		</div>

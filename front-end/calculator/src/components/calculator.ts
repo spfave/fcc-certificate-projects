@@ -1,70 +1,76 @@
 export const NUMBERS = '1234567890.';
 export const OPERATORS = '+-*/';
 
-export function isNumber(item: string) {
+function formatNumber(value: number, numDecimalPlaces = 6) {
+	return value.toLocaleString('en', {maximumFractionDigits: numDecimalPlaces});
+}
+export function isInputNumber(item: string) {
 	return NUMBERS.includes(item);
 }
-export function isOperator(item: string) {
+export function isInputOperator(item: string) {
 	return OPERATORS.includes(item);
 }
 
 export class Calculator {
-	#input: string[];
-	#output: number;
+	#history: string[];
+	#display: string;
 
-	constructor(input: string[], output: number) {
-		this.#input = input;
-		this.#output = output;
+	constructor(history: string[], display: string) {
+		this.#history = history;
+		this.#display = display;
 	}
 
 	enterNumber(number: string) {
 		const lastInput = this.#getLastInput();
 
 		// handle adding new number
-		if (!lastInput || isOperator(lastInput)) {
-			if (number === '.') this.#input.push('0.');
-			else this.#input.push(number);
+		if (!lastInput || isInputOperator(lastInput)) {
+			if (number === '.') this.#history.push('0.');
+			else this.#history.push(number);
 		}
 		// handle appending to last number
 		else if (!isNaN(parseFloat(lastInput))) {
 			if (number === '.' && lastInput.includes('.')) null;
 			else {
 				const newNumber = lastInput.concat(number);
-				this.#input.splice(-1, 1, newNumber);
+				this.#history.splice(-1, 1, newNumber);
 			}
 		}
 
-		return {input: this.#input, output: this.#output};
+		return {history: this.#history, display: this.#display};
 	}
 
 	enterOperator(operator: string) {
 		const lastInput = this.#getLastInput();
 
-		if (lastInput && isOperator(lastInput)) this.#input.splice(-1, 1, operator);
-		else if (lastInput) this.#input.push(operator);
+		if (lastInput && isInputOperator(lastInput)) this.#history.splice(-1, 1, operator);
+		else if (lastInput) this.#history.push(operator);
 		else null;
 
-		return {input: this.#input, output: this.#output};
+		return {history: this.#history, display: this.#display};
 	}
 
 	evaluate() {
 		try {
-			this.#output = eval(this.#input.join(''));
-			if (typeof this.#output === 'number') return this.#output;
-			return 'NaN';
+			const result = eval(this.#history.join(''));
+			if (typeof result === 'number') {
+				this.#history = this.#history.concat('=');
+				this.#display = formatNumber(result);
+			} else this.#display = 'NaN';
 		} catch (error) {
 			console.error(error);
-			return 'Invalid computation';
+			this.#display = 'Invalid computation';
 		}
+		return {history: this.#history, display: this.#display};
 	}
 
 	clear() {
-		this.#input = [];
-		this.#output = 0;
-		return {input: this.#input, output: this.#output};
+		this.#history = [];
+		this.#display = '0';
+		return {history: this.#history, display: this.#display};
 	}
 
 	#getLastInput() {
-		return this.#input.at(-1);
+		return this.#history.at(-1);
 	}
 }
