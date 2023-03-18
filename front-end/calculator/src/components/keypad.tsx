@@ -41,7 +41,7 @@ type KeypadActions =
 	| {type: 'ENTER_NUMBER'; number: string}
 	| {type: 'ENTER_OPERATOR'; operator: string};
 
-const keypadInitialState: KeypadState = {history: [], display: '0'};
+const keypadInitialState: KeypadState = {history: [], display: ''};
 
 function calculatorReducer(state: KeypadState, action: KeypadActions) {
 	const calculator = new Calculator([...state.history], state.display);
@@ -64,8 +64,8 @@ function calculatorReducer(state: KeypadState, action: KeypadActions) {
 export default function Keypad() {
 	const [{history, display}, calcDispatch] = useReducer(
 		calculatorReducer,
-		{history: ['1', '+', '12'], display: '0'}, //testing input
-		// calculatorInitialState,
+		{history: [], display: ''}, //testing input
+		// keypadInitialState,
 	);
 
 	function handleKeyClick(key: string) {
@@ -79,7 +79,7 @@ export default function Keypad() {
 		<div className="calculator">
 			<div className="display-input">{history.join(' ')}</div>
 			<div className="display-output" id="display">
-				{display}
+				{display || '0'}
 			</div>
 			<KeypadButtons handleKeyClick={handleKeyClick} />
 		</div>

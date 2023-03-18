@@ -25,15 +25,16 @@ export class Calculator {
 
 		// handle adding new number
 		if (!lastInput || isInputOperator(lastInput)) {
-			if (number === '.') this.#history.push('0.');
-			else this.#history.push(number);
+			this.#display = number === '.' ? '0.' : number;
+			this.#history.push(this.#display);
 		}
-		// handle appending to last number
-		else if (!isNaN(parseFloat(lastInput))) {
-			if (number === '.' && lastInput.includes('.')) null;
+		// handle appending to existing number
+		else {
+			if (number === '0' && this.#display === '0') null;
+			else if (number === '.' && this.#display.includes('.')) null;
 			else {
-				const newNumber = lastInput.concat(number);
-				this.#history.splice(-1, 1, newNumber);
+				this.#display = this.#display.concat(number);
+				this.#history.splice(-1, 1, this.#display);
 			}
 		}
 
@@ -43,9 +44,19 @@ export class Calculator {
 	enterOperator(operator: string) {
 		const lastInput = this.#getLastInput();
 
-		if (lastInput && isInputOperator(lastInput)) this.#history.splice(-1, 1, operator);
-		else if (lastInput) this.#history.push(operator);
-		else null;
+		// handle new operation on last result
+		if (lastInput === '=') this.#history = [this.#display];
+
+		// handle updating operation
+		if (lastInput && isInputOperator(lastInput)) {
+			this.#display = operator;
+			this.#history.splice(-1, 1, this.#display);
+		}
+		// handle adding new operation
+		else if (lastInput) {
+			this.#display = operator;
+			this.#history.push(this.#display);
+		}
 
 		return {history: this.#history, display: this.#display};
 	}
@@ -66,7 +77,7 @@ export class Calculator {
 
 	clear() {
 		this.#history = [];
-		this.#display = '0';
+		this.#display = '';
 		return {history: this.#history, display: this.#display};
 	}
 
