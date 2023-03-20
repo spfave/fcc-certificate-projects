@@ -21,7 +21,13 @@ export class Calculator {
 	}
 
 	enterNumber(number: string) {
-		const lastInput = this.#getLastInput();
+		let lastInput = this.#getLastInput();
+
+		// handle new number on last result
+		if (lastInput === '=') {
+			this.clear();
+			lastInput = this.#getLastInput();
+		}
 
 		// handle adding new number
 		if (!lastInput || isInputOperator(lastInput)) {
