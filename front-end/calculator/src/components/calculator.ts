@@ -48,10 +48,13 @@ export class Calculator {
 	}
 
 	enterOperator(operator: string) {
-		const lastInput = this.#getLastInput();
+		let lastInput = this.#getLastInput();
 
 		// handle new operation on last result
-		if (lastInput === '=') this.#history = [this.#display];
+		if (lastInput === '=') {
+			this.#history = [this.#display];
+			lastInput = this.#getLastInput();
+		}
 
 		// handle updating operation
 		if (lastInput && isInputOperator(lastInput)) {
@@ -68,6 +71,10 @@ export class Calculator {
 	}
 
 	evaluate() {
+		// return early if already evaluated
+		const lastInput = this.#getLastInput();
+		if (lastInput === '=') return {history: this.#history, display: this.#display};
+
 		try {
 			const result = eval(this.#history.join(''));
 			if (typeof result === 'number') {
