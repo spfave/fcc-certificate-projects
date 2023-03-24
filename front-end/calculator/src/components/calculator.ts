@@ -31,8 +31,16 @@ export class Calculator {
 
 		// handle adding new number
 		if (!lastInput || isInputOperator(lastInput)) {
-			this.#display = number === '.' ? '0.' : number;
-			this.#history.push(this.#display);
+			const last2Input = this.#getHistory(-2);
+
+			// handle appending to negative sign
+			if (lastInput === '-' && last2Input && isInputOperator(last2Input)) {
+				this.#display = this.#display.concat(number === '.' ? '0.' : number);
+				this.#history.splice(-1, 1, this.#display);
+			} else {
+				this.#display = number === '.' ? '0.' : number;
+				this.#history.push(this.#display);
+			}
 		}
 		// handle appending to existing number
 		else {
@@ -58,8 +66,23 @@ export class Calculator {
 
 		// handle updating operation
 		if (lastInput && isInputOperator(lastInput)) {
-			this.#display = operator;
-			this.#history.splice(-1, 1, this.#display);
+			const last2Input = this.#getHistory(-2);
+
+			// reset operation if new operator entered on minus sign
+			if (last2Input && isInputOperator(last2Input)) {
+				this.#display = operator;
+				this.#history.splice(-2, 2, this.#display);
+			}
+			// handle minus as negative operation
+			else if (operator === '-') {
+				this.#display = operator;
+				this.#history.push(this.#display);
+			}
+			// handle updating operator
+			else {
+				this.#display = operator;
+				this.#history.splice(-1, 1, this.#display);
+			}
 		}
 		// handle adding new operation
 		else if (lastInput) {
