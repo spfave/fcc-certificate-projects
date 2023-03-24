@@ -64,8 +64,7 @@ function calculatorReducer(state: KeypadState, action: KeypadActions) {
 export default function Keypad() {
 	const [{history, display}, calcDispatch] = useReducer(
 		calculatorReducer,
-		{history: [], display: ''}, //testing input
-		// keypadInitialState,
+		keypadInitialState,
 	);
 
 	function handleKeyClick(key: string) {
