@@ -71,12 +71,13 @@ export class Calculator {
 	}
 
 	evaluate() {
-		// return early if already evaluated
+		// return early if already evaluated or no history
 		const lastInput = this.#getHistory();
-		if (lastInput === '=') return {history: this.#history, display: this.#display};
+		if (!lastInput || lastInput === '=')
+			return {history: this.#history, display: this.#display};
 
 		try {
-			const result = eval(this.#history.join(''));
+			const result = eval(this.#history.join(' '));
 			if (typeof result === 'number') {
 				this.#history = this.#history.concat('=');
 				this.#display = formatNumber(result);
