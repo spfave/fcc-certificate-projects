@@ -21,12 +21,12 @@ export class Calculator {
 	}
 
 	enterNumber(number: string) {
-		let lastInput = this.#getLastInput();
+		let lastInput = this.#getHistory();
 
 		// handle new number on last result
 		if (lastInput === '=') {
 			this.clear();
-			lastInput = this.#getLastInput();
+			lastInput = this.#getHistory();
 		}
 
 		// handle adding new number
@@ -48,12 +48,12 @@ export class Calculator {
 	}
 
 	enterOperator(operator: string) {
-		let lastInput = this.#getLastInput();
+		let lastInput = this.#getHistory();
 
 		// handle new operation on last result
 		if (lastInput === '=') {
 			this.#history = [this.#display];
-			lastInput = this.#getLastInput();
+			lastInput = this.#getHistory();
 		}
 
 		// handle updating operation
@@ -72,7 +72,7 @@ export class Calculator {
 
 	evaluate() {
 		// return early if already evaluated
-		const lastInput = this.#getLastInput();
+		const lastInput = this.#getHistory();
 		if (lastInput === '=') return {history: this.#history, display: this.#display};
 
 		try {
@@ -94,7 +94,7 @@ export class Calculator {
 		return {history: this.#history, display: this.#display};
 	}
 
-	#getLastInput() {
-		return this.#history.at(-1);
+	#getHistory(position = -1) {
+		return this.#history.at(position);
 	}
 }
