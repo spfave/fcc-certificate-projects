@@ -1,7 +1,7 @@
-# **Calculator**
+# **Keypad Calculator**
 
 ## **Demo**
-<!-- [StackBlitz](https://stackblitz.com/edit/spf-fcc-fe-calculator) -->
+[StackBlitz](https://stackblitz.com/edit/spf-fcc-fe-keypad-calculator)
 
 ## **Objective**
 Build an app that is functionally similar to this: https://javascript-calculator.freecodecamp.rocks/.
@@ -47,3 +47,5 @@ EXAMPLE: 3 + 5 x 6 - 2 / 4 =
 - Formula/Expression Logic: 32.5
 
 ## **Notes**
+- [WDS JS Calculator](https://github.com/WebDevSimplified/Vanilla-JavaScript-Calculator)
+- [JS eval()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)
