@@ -1,0 +1,87 @@
+.calculator {
+	background-color: white;
+	border: solid black 5px;
+	font-family: 'Orbitron', sans-serif;
+	width: var(--min-width);
+
+	& .display-input,
+	& .display-output {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		min-height: 4rem;
+		background-color: black;
+		color: white;
+		padding: 0 0.5rem;
+		font-size: 1.5rem;
+		font-weight: bold;
+	}
+
+	& .display-input {
+		color: orange;
+	}
+
+	& .keypad {
+		display: grid;
+		gap: 2px;
+		grid-template-columns: repeat(4, 1fr);
+		grid-template-rows: repeat(5, 5rem);
+		grid-template-areas:
+			'clear clear divide multiply'
+			'seven eight nine subtract'
+			'four five six add'
+			'one two three equals'
+			'zero zero decimal equals';
+
+		& button {
+			border: none;
+			font-size: 1.5rem;
+			font-weight: bold;
+			/* grid-area: attr(data-grid-area); Possible future solution*/
+
+			&[data-type='number'] {
+				background-color: color(grey tint(90%));
+				font-family: inherit;
+				&:hover {
+					background-color: color(grey tint(70%));
+				}
+				&:active {
+					background-color: color(grey tint(50%));
+				}
+			}
+
+			&[data-type='operator'] {
+				background-color: lightgray;
+				&:hover {
+					background-color: color(lightgray shade(10%));
+				}
+				&:active {
+					background-color: color(lightgray shade(20%));
+				}
+			}
+
+			&#clear {
+				background-color: lightblue;
+				font-family: inherit;
+
+				&:hover {
+					background-color: color(lightblue shade(10%));
+				}
+				&:active {
+					background-color: color(lightblue shade(20%));
+				}
+			}
+
+			&#equals {
+				background-color: orange;
+
+				&:hover {
+					background-color: color(orange shade(10%));
+				}
+				&:active {
+					background-color: color(orange shade(20%));
+				}
+			}
+		}
+	}
+}
