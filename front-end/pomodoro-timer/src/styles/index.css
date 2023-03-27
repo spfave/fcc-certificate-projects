@@ -17,3 +17,11 @@ body {
 a {
 	text-decoration: none;
 }
+
+/* App */
+main {
+	display: grid;
+	place-items: center;
+	background-color: aliceblue;
+	min-height: 100dvh;
+}

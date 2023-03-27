@@ -1,0 +1,33 @@
+.pomodoro-timer {
+	min-width: var(--min-width);
+	padding: 1rem;
+	background-color: white;
+	border-radius: 1rem;
+
+	& .title {
+		& h1 {
+			margin-top: 0;
+			text-align: center;
+		}
+	}
+
+	& .timer {
+		margin: 1rem 0;
+
+		& .timer-display {
+			& h2 {
+				text-align: center;
+			}
+		}
+
+		& .timer-controls {
+			display: flex;
+			justify-content: center;
+		}
+	}
+
+	& .session-controls {
+		display: flex;
+		justify-content: space-between;
+	}
+}
