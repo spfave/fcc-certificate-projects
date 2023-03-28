@@ -3,22 +3,22 @@
 	padding: 1rem;
 	background-color: white;
 	border-radius: 1rem;
+	text-align: center;
 
 	& .title {
 		& h1 {
 			margin-top: 0;
-			text-align: center;
 		}
 	}
 
 	& .timer {
 		margin: 1rem 0;
 
-		& .timer-display {
-			& h2 {
-				text-align: center;
-			}
-		}
+		/* & #timer-label {
+		} */
+
+		/* & .timer-display {
+		} */
 
 		& .timer-controls {
 			display: flex;
@@ -27,7 +27,12 @@
 	}
 
 	& .session-controls {
-		display: flex;
-		justify-content: space-between;
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: 1fr 1fr;
+
+		& p {
+			margin: 0;
+		}
 	}
 }
