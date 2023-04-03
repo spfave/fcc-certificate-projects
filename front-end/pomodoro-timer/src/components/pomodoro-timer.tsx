@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 
 import './pomodoro-timer.css';
 
@@ -17,11 +17,12 @@ function formatTime(seconds: number) {
 
 // Component
 export default function PomodoroTimer() {
-	// state:
-	// ? timer status: 'idle' | 'running' | 'paused'
 	const [sessionType, setSessionType] = useState<'Session' | 'Break'>('Session');
 	const [sessionTime, setSessionTime] = useState(INITIAL_SESSION_TIME);
 	const [breakTime, setBreakTime] = useState(INITIAL_BREAK_TIME);
+
+	const refTimer = useRef<null | number>(null);
+	const [timerStatus, setTimerStatus] = useState<'idle' | 'running'>('idle');
 	const [timerValue, setTimerValue] = useState(INITIAL_SESSION_TIME * 60);
 
 	return (
