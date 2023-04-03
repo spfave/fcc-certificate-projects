@@ -32,8 +32,8 @@ function useIncDecButton(initialValue = 0) {
 // Component
 export default function PomodoroTimer() {
 	const [sessionType, setSessionType] = useState<'Session' | 'Break'>('Session');
-	const [sessionTime, setSessionTime] = useState(INITIAL_SESSION_TIME);
-	const [breakTime, setBreakTime] = useState(INITIAL_BREAK_TIME);
+	const [sessionTime, sessionTimeFuncs] = useIncDecButton(INITIAL_SESSION_TIME);
+	const [breakTime, breakTimeFuncs] = useIncDecButton(INITIAL_BREAK_TIME);
 
 	const refTimer = useRef<null | number>(null);
 	const [timerStatus, setTimerStatus] = useState<'idle' | 'running'>('idle');
@@ -61,14 +61,38 @@ export default function PomodoroTimer() {
 				<div>
 					<p id="session-label">Session Length</p>
 					<p id="session-length">{sessionTime}</p>
-					<button id="session-increment">+</button>
-					<button id="session-decrement">-</button>
+					<button
+						id="session-increment"
+						onClick={sessionTimeFuncs.incrementValue}
+						disabled={timerStatus === 'running' || sessionTime === 60}
+					>
+						+
+					</button>
+					<button
+						id="session-decrement"
+						onClick={sessionTimeFuncs.decrementValue}
+						disabled={timerStatus === 'running' || sessionTime === 1}
+					>
+						-
+					</button>
 				</div>
 				<div>
 					<p id="break-label">Break Length</p>
 					<p id="break-length">{breakTime}</p>
-					<button id="break-increment">+</button>
-					<button id="break-decrement">-</button>
+					<button
+						id="break-increment"
+						onClick={breakTimeFuncs.incrementValue}
+						disabled={timerStatus === 'running' || breakTime === 60}
+					>
+						+
+					</button>
+					<button
+						id="break-decrement"
+						onClick={breakTimeFuncs.decrementValue}
+						disabled={timerStatus === 'running' || breakTime === 1}
+					>
+						-
+					</button>
 				</div>
 			</div>
 		</div>
