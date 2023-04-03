@@ -15,6 +15,20 @@ function formatTime(seconds: number) {
 	return new Date(seconds * 1000).toISOString().substring(14, 19); // MM:SS
 }
 
+function useIncDecButton(initialValue = 0) {
+	const [value, setValue] = useState(initialValue);
+
+	function incrementValue() {
+		if (value < 60) setValue((cValue) => cValue + 1);
+	}
+
+	function decrementValue() {
+		if (value > 1) setValue((cValue) => cValue - 1);
+	}
+
+	return [value, {incrementValue, decrementValue}] as const;
+}
+
 // Component
 export default function PomodoroTimer() {
 	const [sessionType, setSessionType] = useState<'Session' | 'Break'>('Session');
