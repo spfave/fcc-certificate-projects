@@ -3,19 +3,26 @@ import {useState} from 'react';
 import './pomodoro-timer.css';
 
 // Data
+const TIME_HOUR_IN_SECONDS = 3600; // seconds
 const INITIAL_SESSION_TIME = 25; // minutes
 const INITIAL_BREAK_TIME = 5; // minutes
 
+// Utility functions
+function formatTime(seconds: number) {
+	// To handle max time case without hour increment HH:MM:SS
+	if (seconds === TIME_HOUR_IN_SECONDS) return '60:00';
+
+	return new Date(seconds * 1000).toISOString().substring(14, 19); // MM:SS
+}
+
+// Component
 export default function PomodoroTimer() {
 	// state:
-	// breakTime: number
-	// sessionTime: number
-	// session type: 'session' | 'break'
-	// ? timer status: 'running' | 'paused'
-	// timerValue: number
+	// ? timer status: 'idle' | 'running' | 'paused'
 	const [sessionType, setSessionType] = useState<'Session' | 'Break'>('Session');
 	const [sessionTime, setSessionTime] = useState(INITIAL_SESSION_TIME);
 	const [breakTime, setBreakTime] = useState(INITIAL_BREAK_TIME);
+	const [timerValue, setTimerValue] = useState(INITIAL_SESSION_TIME * 60);
 
 	return (
 		<div className="pomodoro-timer">
@@ -27,7 +34,7 @@ export default function PomodoroTimer() {
 					<p id="timer-label">{sessionType}</p>
 				</div>
 				<div className="timer-display">
-					<h2 id="time-left">XX:YY</h2>
+					<h2 id="time-left">{formatTime(timerValue)}</h2>
 					<audio id="beep" src=""></audio>
 				</div>
 				<div className="timer-controls">
