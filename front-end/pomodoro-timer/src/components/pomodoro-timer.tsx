@@ -39,7 +39,11 @@ const timerInitialState: TimerState = {
 function timerReducer(state: TimerState, action: TimerActions) {
 	switch (action.type) {
 		case 'CHANGE_SESSION_TIME':
-			return {...state, sessionTime: state.sessionTime + action.change};
+			return {
+				...state,
+				sessionTime: state.sessionTime + action.change,
+				timerValue: (state.sessionTime + action.change) * 60,
+			};
 		case 'CHANGE_BREAK_TIME':
 			return {...state, breakTime: state.breakTime + action.change};
 		default:
