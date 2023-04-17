@@ -26,7 +26,8 @@ type TimerState = {
 
 type TimerActions =
 	| {type: 'CHANGE_SESSION_TIME'; change: number}
-	| {type: 'CHANGE_BREAK_TIME'; change: number};
+	| {type: 'CHANGE_BREAK_TIME'; change: number}
+	| {type: 'RESET'};
 
 const timerInitialState: TimerState = {
 	sessionType: 'Session',
@@ -46,6 +47,8 @@ function timerReducer(state: TimerState, action: TimerActions) {
 			};
 		case 'CHANGE_BREAK_TIME':
 			return {...state, breakTime: state.breakTime + action.change};
+		case 'RESET':
+			return timerInitialState;
 		default:
 			return state;
 	}
@@ -72,7 +75,9 @@ export default function PomodoroTimer() {
 				</div>
 				<div className="timer-controls">
 					<button id="start_stop">start/pause</button>
-					<button id="reset">reset</button>
+					<button id="reset" onClick={() => timerDispatch({type: 'RESET'})}>
+						reset
+					</button>
 				</div>
 			</div>
 			<div className="session-controls">
