@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react';
+import {useReducer, useRef} from 'react';
 
 import './pomodoro-timer.css';
 
@@ -15,29 +15,43 @@ function formatTime(seconds: number) {
 	return new Date(seconds * 1000).toISOString().substring(14, 19); // MM:SS
 }
 
-function useIncDecButton(initialValue = 0) {
-	const [value, setValue] = useState(initialValue);
+// Timer reducer
+type TimerState = {
+	sessionType: 'Session' | 'Break';
+	sessionTime: number;
+	breakTime: number;
+	timerStatus: 'idle' | 'running';
+	timerValue: number;
+};
 
-	function incrementValue() {
-		if (value < 60) setValue((cValue) => cValue + 1);
+type TimerActions =
+	| {type: 'CHANGE_SESSION_TIME'; change: number}
+	| {type: 'CHANGE_BREAK_TIME'; change: number};
+
+const timerInitialState: TimerState = {
+	sessionType: 'Session',
+	sessionTime: INITIAL_SESSION_TIME,
+	breakTime: INITIAL_BREAK_TIME,
+	timerStatus: 'idle',
+	timerValue: INITIAL_SESSION_TIME * 60,
+};
+
+function timerReducer(state: TimerState, action: TimerActions) {
+	switch (action.type) {
+		case 'CHANGE_SESSION_TIME':
+			return {...state, sessionTime: state.sessionTime + action.change};
+		case 'CHANGE_BREAK_TIME':
+			return {...state, breakTime: state.breakTime + action.change};
+		default:
+			return state;
 	}
-
-	function decrementValue() {
-		if (value > 1) setValue((cValue) => cValue - 1);
-	}
-
-	return [value, {incrementValue, decrementValue}] as const;
 }
 
 // Component
 export default function PomodoroTimer() {
-	const [sessionType, setSessionType] = useState<'Session' | 'Break'>('Session');
-	const [sessionTime, sessionTimeFuncs] = useIncDecButton(INITIAL_SESSION_TIME);
-	const [breakTime, breakTimeFuncs] = useIncDecButton(INITIAL_BREAK_TIME);
-
+	const [{sessionType, sessionTime, breakTime, timerStatus, timerValue}, timerDispatch] =
+		useReducer(timerReducer, timerInitialState);
 	const refTimer = useRef<null | number>(null);
-	const [timerStatus, setTimerStatus] = useState<'idle' | 'running'>('idle');
-	const [timerValue, setTimerValue] = useState(INITIAL_SESSION_TIME * 60);
 
 	return (
 		<div className="pomodoro-timer">
@@ -63,14 +77,14 @@ export default function PomodoroTimer() {
 					<p id="session-length">{sessionTime}</p>
 					<button
 						id="session-increment"
-						onClick={sessionTimeFuncs.incrementValue}
+						onClick={() => timerDispatch({type: 'CHANGE_SESSION_TIME', change: 1})}
 						disabled={timerStatus === 'running' || sessionTime === 60}
 					>
 						+
 					</button>
 					<button
 						id="session-decrement"
-						onClick={sessionTimeFuncs.decrementValue}
+						onClick={() => timerDispatch({type: 'CHANGE_SESSION_TIME', change: -1})}
 						disabled={timerStatus === 'running' || sessionTime === 1}
 					>
 						-
@@ -81,14 +95,14 @@ export default function PomodoroTimer() {
 					<p id="break-length">{breakTime}</p>
 					<button
 						id="break-increment"
-						onClick={breakTimeFuncs.incrementValue}
+						onClick={() => timerDispatch({type: 'CHANGE_BREAK_TIME', change: 1})}
 						disabled={timerStatus === 'running' || breakTime === 60}
 					>
 						+
 					</button>
 					<button
 						id="break-decrement"
-						onClick={breakTimeFuncs.decrementValue}
+						onClick={() => timerDispatch({type: 'CHANGE_BREAK_TIME', change: -1})}
 						disabled={timerStatus === 'running' || breakTime === 1}
 					>
 						-
