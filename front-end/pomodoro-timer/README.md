@@ -67,4 +67,6 @@ You can use any mix of HTML, JavaScript, CSS, Bootstrap, SASS, React, Redux, and
 **User Story #28:** The audio element with id of beep must stop playing and be rewound to the beginning when the element with the id of reset is clicked.
 
 ## **Notes**
-[Timer value formatting](https://stackoverflow.com/questions/1322732/convert-seconds-to-hh-mm-ss-with-javascript)
+[Making setInterval Declarative with React Hooks](https://overreacted.io/making-setinterval-declarative-with-react-hooks/)  
+[usehooks-ts: useInterval](https://usehooks-ts.com/react-hook/use-interval)  
+[Timer value formatting](https://stackoverflow.com/questions/1322732/convert-seconds-to-hh-mm-ss-with-javascript)  

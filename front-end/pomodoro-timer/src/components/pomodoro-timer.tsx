@@ -207,3 +207,20 @@ export default function PomodoroTimer() {
 		</div>
 	);
 }
+
+// Ref: https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+// Ref: https://usehooks-ts.com/react-hook/use-interval
+function useInterval(callback: () => void, delay: number | null) {
+	const savedCallback = useRef(callback);
+
+	// Save the latest callback function
+	useEffect(() => (savedCallback.current = callback), [callback]);
+
+	// Set up the interval
+	useEffect(() => {
+		if (delay !== null) {
+			const id = setInterval(() => savedCallback.current(), delay);
+			return () => clearInterval(id);
+		}
+	}, [delay]);
+}
