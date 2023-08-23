@@ -2,14 +2,10 @@ import {useEffect, useReducer, useRef, useState} from 'react';
 
 import './pomodoro-timer.css';
 
-// Types
-type SessionType = 'Session' | 'Break';
-type TimerStatus = 'idle' | 'running';
-
 // Data
 const TIME_HOUR_IN_SECONDS = 3600; // seconds
-const INITIAL_SESSION_TIME = 25; // minutes
-const INITIAL_BREAK_TIME = 5; // minutes
+const INITIAL_SESSION_TIME = 1; // minutes
+const INITIAL_BREAK_TIME = 1; // minutes
 
 // Utility functions
 function formatTime(seconds: number) {
@@ -19,66 +15,70 @@ function formatTime(seconds: number) {
 	return new Date(seconds * 1000).toISOString().substring(14, 19); // MM:SS
 }
 
-// Timer reducer
-// type TimerState = {
-// 	sessionType: 'Session' | 'Break';
-// 	sessionTime: number;
-// 	breakTime: number;
-// 	timerStatus: 'idle' | 'running'; // | 'paused'
-// 	timerValue: number;
-// };
+// Pomodoro state and reducer
+type PomodoroState = {
+	sessionType: 'Session' | 'Break';
+	sessionTime: number;
+	breakTime: number;
+	timerStatus: 'idle' | 'running';
+	timeRemaining: number;
+};
 
-// type TimerActions =
-// 	| {type: 'CHANGE_SESSION_TIME'; change: number}
-// 	| {type: 'CHANGE_BREAK_TIME'; change: number}
-// 	| {type: 'START_TIMER'}
-// 	| {type: 'UPDATE_TIMER'}
-// 	| {type: 'PAUSE_TIMER'}
-// 	| {type: 'RESUME_TIMER'}
-// 	| {type: 'RESET_TIMER'};
+const pomodoroInitialState: PomodoroState = {
+	sessionType: 'Session',
+	sessionTime: INITIAL_SESSION_TIME,
+	breakTime: INITIAL_BREAK_TIME,
+	timerStatus: 'idle',
+	timeRemaining: INITIAL_SESSION_TIME * 60,
+};
 
-// const timerInitialState: TimerState = {
-// 	sessionType: 'Session',
-// 	sessionTime: INITIAL_SESSION_TIME,
-// 	breakTime: INITIAL_BREAK_TIME,
-// 	timerStatus: 'idle',
-// 	timerValue: INITIAL_SESSION_TIME * 60,
-// };
+type PomodoroActions =
+	| {type: 'CHANGE_SESSION_TIME'; change: number}
+	| {type: 'CHANGE_BREAK_TIME'; change: number}
+	| {type: 'START_PAUSE_RESUME_TIMER'}
+	| {type: 'UPDATE_TIME_REMAINING'}
+	| {type: 'SWITCH_SESSION_TYPE'}
+	| {type: 'RESET_TIMER'};
 
-// function timerReducer(state: TimerState, action: TimerActions): TimerState {
-// 	switch (action.type) {
-// 		case 'CHANGE_SESSION_TIME':
-// 			return {
-// 				...state,
-// 				sessionTime: state.sessionTime + action.change,
-// 				timerValue: (state.sessionTime + action.change) * 60,
-// 			};
-// 		case 'CHANGE_BREAK_TIME':
-// 			return {...state, breakTime: state.breakTime + action.change};
-// 		case 'START_TIMER':
-// 			return {...state, timerStatus: 'running'};
-// 		// case 'UPDATE_TIMER': {
-// 		// 	const newTimerValue = state.timerValue - 1;
-// 		// 	return state;
-// 		// }
-// 		// case 'PAUSE_TIMER':
-// 		case 'RESET_TIMER':
-// 			return timerInitialState;
-// 		default:
-// 			return state;
-// 	}
-// }
+function pomodoroReducer(state: PomodoroState, action: PomodoroActions): PomodoroState {
+	switch (action.type) {
+		case 'CHANGE_SESSION_TIME':
+			return {
+				...state,
+				sessionTime: state.sessionTime + action.change,
+				timeRemaining: (state.sessionTime + action.change) * 60,
+			};
+		case 'CHANGE_BREAK_TIME':
+			return {...state, breakTime: state.breakTime + action.change};
+		case 'START_PAUSE_RESUME_TIMER':
+			return state.timerStatus === 'idle'
+				? {...state, timerStatus: 'running'}
+				: {...state, timerStatus: 'idle'};
+		case 'UPDATE_TIME_REMAINING':
+			return {...state, timeRemaining: state.timeRemaining - 1};
+		case 'SWITCH_SESSION_TYPE':
+			return state.sessionType === 'Session'
+				? {...state, timeRemaining: state.breakTime * 60, sessionType: 'Break'}
+				: {...state, timeRemaining: state.sessionTime * 60, sessionType: 'Session'};
+		case 'RESET_TIMER':
+			return pomodoroInitialState;
+		default:
+			return state;
+	}
+}
 
 // Component
 export default function PomodoroTimer() {
-	const [sessionType, setSessionType] = useState<SessionType>('Session');
-	const [sessionTime, setSessionTime] = useState(INITIAL_SESSION_TIME);
-	const [breakTime, setBreakTime] = useState(INITIAL_BREAK_TIME);
-	const [timerStatus, setTimerStatus] = useState<TimerStatus>('idle');
-	const [timerValue, setTimerValue] = useState(INITIAL_SESSION_TIME * 60);
+	// const [sessionType, setSessionType] = useState<SessionType>('Session');
+	// const [sessionTime, setSessionTime] = useState(INITIAL_SESSION_TIME);
+	// const [breakTime, setBreakTime] = useState(INITIAL_BREAK_TIME);
+	// const [timerStatus, setTimerStatus] = useState<TimerStatus>('idle');
+	// const [timerValue, setTimerValue] = useState(INITIAL_SESSION_TIME * 60);
 
-	// const [{sessionType, sessionTime, breakTime, timerStatus, timerValue}, timerDispatch] =
-	// 	useReducer(timerReducer, timerInitialState);
+	const [
+		{sessionType, sessionTime, breakTime, timerStatus, timeRemaining},
+		pomodoroDispatch,
+	] = useReducer(pomodoroReducer, pomodoroInitialState);
 
 	/** START session time
 	 * Start setInterval:
@@ -94,53 +94,60 @@ export default function PomodoroTimer() {
 	 * set timerStatus = 'running'
 	 * start new timer from paused increment timer
 	 */
-	function startPauseResumeTimer() {
-		timerStatus === 'idle' ? setTimerStatus('running') : setTimerStatus('idle');
-		// timerDispatch({type: 'START_TIMER'});
-	}
+	// function startPauseResumeTimer() {
+	// 	timerStatus === 'idle' ? setTimerStatus('running') : setTimerStatus('idle');
+	// }
 
 	useInterval(
 		() => {
-			if (timerValue > 0) setTimerValue(timerValue - 1);
+			// const newTimerValue = timerValue - 1;
+			// console.info(`timerValue: `, timerValue); //LOG
+			// console.info(`newTimerValue: `, newTimerValue); //LOG
+			// if (newTimerValue > 0) setTimerValue(newTimerValue);// const newTimerValue = timerValue - 1;
+			// console.info(`timerValue: `, timerValue); //LOG
+			// console.info(`newTimerValue: `, newTimerValue); //LOG
+			// if (newTimerValue > 0) setTimerValue(newTimerValue);
+			// if (timerValue > 0) setTimerValue(timerValue - 1);
+			if (timeRemaining > 0) pomodoroDispatch({type: 'UPDATE_TIME_REMAINING'});
 			else {
 				signalSessionEnd();
-				swapSessionType();
+				// switchSessionType();
+				pomodoroDispatch({type: 'SWITCH_SESSION_TYPE'});
 			}
 		},
-		timerStatus === 'running' ? 1000 : null,
+		timerStatus === 'running' ? 100 : null,
 	);
 
 	function signalSessionEnd() {
 		console.info(`SESSION END`); //LOG
 	}
 
-	function swapSessionType() {
-		if (sessionType === 'Session') {
-			setTimerValue(breakTime * 60);
-			setSessionType('Break');
-		} else {
-			setTimerValue(sessionTime * 60);
-			setSessionType('Session');
-		}
-	}
+	// function switchSessionType() {
+	// 	if (sessionType === 'Session') {
+	// 		setTimerValue(breakTime * 60);
+	// 		setSessionType('Break');
+	// 	} else {
+	// 		setTimerValue(sessionTime * 60);
+	// 		setSessionType('Session');
+	// 	}
+	// }
 
-	function resetTimer() {
-		setSessionType('Session');
-		setSessionTime(INITIAL_SESSION_TIME);
-		setBreakTime(INITIAL_BREAK_TIME);
-		setTimerStatus('idle');
-		setTimerValue(INITIAL_SESSION_TIME * 60);
-		// timerDispatch({type: 'RESET_TIMER'});
-	}
+	// function resetTimer() {
+	// 	setSessionType('Session');
+	// 	setSessionTime(INITIAL_SESSION_TIME);
+	// 	setBreakTime(INITIAL_BREAK_TIME);
+	// 	setTimerStatus('idle');
+	// 	setTimerValue(INITIAL_SESSION_TIME * 60);
+	// }
 
-	function updateSessionTime(change: number) {
-		setSessionTime(sessionTime + change);
-		setTimerValue((sessionTime + change) * 60);
-	}
+	// function updateSessionTime(change: number) {
+	// 	setSessionTime(sessionTime + change);
+	// 	setTimerValue((sessionTime + change) * 60);
+	// }
 
-	function updateBreakTime(change: number) {
-		setBreakTime(breakTime + change);
-	}
+	// function updateBreakTime(change: number) {
+	// 	setBreakTime(breakTime + change);
+	// }
 
 	return (
 		<div className="pomodoro-timer">
@@ -152,15 +159,23 @@ export default function PomodoroTimer() {
 					<p id="timer-label">{sessionType}</p>
 				</div>
 				<div className="timer-display">
-					<h2 id="time-left">{formatTime(timerValue)}</h2>
+					<h2 id="time-left">{formatTime(timeRemaining)}</h2>
 					{/* TODO add audio source */}
 					<audio id="beep" src=""></audio>
 				</div>
 				<div className="timer-controls">
-					<button id="start_stop" onClick={startPauseResumeTimer}>
+					<button
+						id="start_stop"
+						// onClick={startPauseResumeTimer}
+						onClick={() => pomodoroDispatch({type: 'START_PAUSE_RESUME_TIMER'})}
+					>
 						start/pause
 					</button>
-					<button id="reset" onClick={resetTimer}>
+					<button
+						id="reset"
+						// onClick={resetTimer}>
+						onClick={() => pomodoroDispatch({type: 'RESET_TIMER'})}
+					>
 						reset
 					</button>
 				</div>
@@ -171,16 +186,16 @@ export default function PomodoroTimer() {
 					<p id="session-length">{sessionTime}</p>
 					<button
 						id="session-increment"
-						// onClick={() => timerDispatch({type: 'CHANGE_SESSION_TIME', change: 1})}
-						onClick={() => updateSessionTime(1)}
+						onClick={() => pomodoroDispatch({type: 'CHANGE_SESSION_TIME', change: 1})}
+						// onClick={() => updateSessionTime(1)}
 						disabled={timerStatus === 'running' || sessionTime === 60}
 					>
 						+
 					</button>
 					<button
 						id="session-decrement"
-						// onClick={() => timerDispatch({type: 'CHANGE_SESSION_TIME', change: -1})}
-						onClick={() => updateSessionTime(-1)}
+						onClick={() => pomodoroDispatch({type: 'CHANGE_SESSION_TIME', change: -1})}
+						// onClick={() => updateSessionTime(-1)}
 						disabled={timerStatus === 'running' || sessionTime === 1}
 					>
 						-
@@ -191,16 +206,16 @@ export default function PomodoroTimer() {
 					<p id="break-length">{breakTime}</p>
 					<button
 						id="break-increment"
-						// onClick={() => timerDispatch({type: 'CHANGE_BREAK_TIME', change: 1})}
-						onClick={() => updateBreakTime(1)}
+						onClick={() => pomodoroDispatch({type: 'CHANGE_BREAK_TIME', change: 1})}
+						// onClick={() => updateBreakTime(1)}
 						disabled={timerStatus === 'running' || breakTime === 60}
 					>
 						+
 					</button>
 					<button
 						id="break-decrement"
-						// onClick={() => timerDispatch({type: 'CHANGE_BREAK_TIME', change: -1})}
-						onClick={() => updateBreakTime(-1)}
+						onClick={() => pomodoroDispatch({type: 'CHANGE_BREAK_TIME', change: -1})}
+						// onClick={() => updateBreakTime(-1)}
 						disabled={timerStatus === 'running' || breakTime === 1}
 					>
 						-
