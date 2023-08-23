@@ -83,6 +83,7 @@ export default function PomodoroTimer() {
 		{sessionType, sessionTime, breakTime, timerStatus, timeRemaining},
 		pomodoroDispatch,
 	] = useReducer(pomodoroReducer, pomodoroInitialState);
+	const refAudio = useRef<HTMLAudioElement | null>(null);
 
 	useInterval(
 		() => {
@@ -96,16 +97,18 @@ export default function PomodoroTimer() {
 	);
 
 	function resetTimer() {
-		const sound = document.getElementById('beep') as HTMLAudioElement;
-		sound.pause();
-		sound.currentTime = 0;
+		if (refAudio.current) {
+			refAudio.current.pause();
+			refAudio.current.currentTime = 0;
+		}
 		pomodoroDispatch({type: 'RESET_TIMER'});
 	}
 
 	function signalSessionEnd() {
-		const sound = document.getElementById('beep') as HTMLAudioElement;
-		sound.currentTime = 0;
-		sound.play();
+		if (refAudio.current) {
+			refAudio.current.currentTime = 0;
+			refAudio.current.play();
+		}
 	}
 
 	return (
@@ -119,8 +122,11 @@ export default function PomodoroTimer() {
 				</div>
 				<div className="timer-display">
 					<h2 id="time-left">{formatTime(timeRemaining)}</h2>
-					{/* TODO add audio source */}
-					<audio id="beep" src="audio/mixkit-happy-bells-notification.wav"></audio>
+					<audio
+						id="beep"
+						ref={refAudio}
+						src="audio/mixkit-happy-bells-notification.wav"
+					></audio>
 				</div>
 				<div className="timer-controls">
 					<button
