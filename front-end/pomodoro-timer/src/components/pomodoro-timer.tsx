@@ -46,10 +46,20 @@ function pomodoroReducer(state: PomodoroState, action: PomodoroActions): Pomodor
 			return {
 				...state,
 				sessionTime: state.sessionTime + action.change,
-				timeRemaining: (state.sessionTime + action.change) * 60,
+				timeRemaining:
+					state.sessionType === 'Session'
+						? (state.sessionTime + action.change) * 60
+						: state.timeRemaining,
 			};
 		case 'CHANGE_BREAK_TIME':
-			return {...state, breakTime: state.breakTime + action.change};
+			return {
+				...state,
+				breakTime: state.breakTime + action.change,
+				timeRemaining:
+					state.sessionType === 'Break'
+						? (state.breakTime + action.change) * 60
+						: state.timeRemaining,
+			};
 		case 'START_PAUSE_RESUME_TIMER':
 			return state.timerStatus === 'idle'
 				? {...state, timerStatus: 'running'}
