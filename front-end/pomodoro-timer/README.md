@@ -1,7 +1,7 @@
 # **Pomodoro Timer**
 
 ## **Demo**
-<!-- [StackBlitz](https://stackblitz.com/edit/spf-fcc-fe-pomodoro-timer) -->
+[StackBlitz](https://stackblitz.com/edit/spf-fcc-fe-pomodoro-timer)
 
 ## **Objective**
 Build an app that is functionally similar to this: https://25--5-clock.freecodecamp.rocks.
