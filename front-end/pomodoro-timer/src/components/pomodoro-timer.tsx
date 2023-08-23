@@ -4,7 +4,7 @@ import './pomodoro-timer.css';
 
 // Types
 type SessionType = 'Session' | 'Break';
-type TimerStatus = 'idle' | 'running' | 'paused';
+type TimerStatus = 'idle' | 'running';
 
 // Data
 const TIME_HOUR_IN_SECONDS = 3600; // seconds
@@ -76,7 +76,6 @@ export default function PomodoroTimer() {
 	const [breakTime, setBreakTime] = useState(INITIAL_BREAK_TIME);
 	const [timerStatus, setTimerStatus] = useState<TimerStatus>('idle');
 	const [timerValue, setTimerValue] = useState(INITIAL_SESSION_TIME * 60);
-	const refTimer = useRef<null | number>(null);
 
 	// const [{sessionType, sessionTime, breakTime, timerStatus, timerValue}, timerDispatch] =
 	// 	useReducer(timerReducer, timerInitialState);
@@ -96,27 +95,36 @@ export default function PomodoroTimer() {
 	 * start new timer from paused increment timer
 	 */
 	function startPauseResumeTimer() {
+		timerStatus === 'idle' ? setTimerStatus('running') : setTimerStatus('idle');
 		// timerDispatch({type: 'START_TIMER'});
-		if (timerStatus === 'idle') {
-			setTimerStatus('running');
-			refTimer.current = startTimerInterval();
-		} else if (timerStatus === 'running') {
-			setTimerStatus('paused');
-			refTimer.current && window.clearInterval(refTimer.current);
+	}
+
+	useInterval(
+		() => {
+			if (timerValue > 0) setTimerValue(timerValue - 1);
+			else {
+				signalSessionEnd();
+				swapSessionType();
+			}
+		},
+		timerStatus === 'running' ? 1000 : null,
+	);
+
+	function signalSessionEnd() {
+		console.info(`SESSION END`); //LOG
+	}
+
+	function swapSessionType() {
+		if (sessionType === 'Session') {
+			setTimerValue(breakTime * 60);
+			setSessionType('Break');
 		} else {
-			setTimerStatus('running');
-			refTimer.current = startTimerInterval();
+			setTimerValue(sessionTime * 60);
+			setSessionType('Session');
 		}
 	}
 
-	function startTimerInterval() {
-		return window.setInterval(() => {
-			setTimerValue((tValue) => tValue - 1);
-		}, 1000);
-	}
-
 	function resetTimer() {
-		if (refTimer.current) window.clearInterval(refTimer.current);
 		setSessionType('Session');
 		setSessionTime(INITIAL_SESSION_TIME);
 		setBreakTime(INITIAL_BREAK_TIME);
@@ -133,11 +141,6 @@ export default function PomodoroTimer() {
 	function updateBreakTime(change: number) {
 		setBreakTime(breakTime + change);
 	}
-
-	// on destroy cleanup
-	useEffect(() => {
-		return () => (refTimer.current ? window.clearInterval(refTimer.current) : undefined);
-	}, []);
 
 	return (
 		<div className="pomodoro-timer">
