@@ -214,13 +214,15 @@ function useInterval(callback: () => void, delay: number | null) {
 	const savedCallback = useRef(callback);
 
 	// Save the latest callback function
-	useEffect(() => (savedCallback.current = callback), [callback]);
+	useEffect(() => {
+		savedCallback.current = callback;
+	}, [callback]);
 
 	// Set up the interval
 	useEffect(() => {
-		if (delay !== null) {
-			const id = setInterval(() => savedCallback.current(), delay);
-			return () => clearInterval(id);
-		}
+		if (delay === null) return; // Don't schedule interval if delay is not specified
+
+		const id = setInterval(() => savedCallback.current(), delay);
+		return () => clearInterval(id);
 	}, [delay]);
 }
