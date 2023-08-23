@@ -85,6 +85,13 @@ export default function PomodoroTimer() {
 		timerStatus === 'running' ? 1000 : null,
 	);
 
+	function resetTimer() {
+		const sound = document.getElementById('beep') as HTMLAudioElement;
+		sound.pause();
+		sound.currentTime = 0;
+		pomodoroDispatch({type: 'RESET_TIMER'});
+	}
+
 	function signalSessionEnd() {
 		const sound = document.getElementById('beep') as HTMLAudioElement;
 		sound.currentTime = 0;
@@ -112,7 +119,7 @@ export default function PomodoroTimer() {
 					>
 						start/pause
 					</button>
-					<button id="reset" onClick={() => pomodoroDispatch({type: 'RESET_TIMER'})}>
+					<button id="reset" onClick={resetTimer}>
 						reset
 					</button>
 				</div>
