@@ -4,8 +4,8 @@ import './pomodoro-timer.css';
 
 // Data
 const TIME_HOUR_IN_SECONDS = 3600; // seconds
-const INITIAL_SESSION_TIME = 1; // minutes
-const INITIAL_BREAK_TIME = 1; // minutes
+const INITIAL_SESSION_TIME = 25; // minutes
+const INITIAL_BREAK_TIME = 5; // minutes
 
 // Utility functions
 function formatTime(seconds: number) {
@@ -82,11 +82,13 @@ export default function PomodoroTimer() {
 				pomodoroDispatch({type: 'SWITCH_SESSION_TYPE'});
 			}
 		},
-		timerStatus === 'running' ? 100 : null,
+		timerStatus === 'running' ? 1000 : null,
 	);
 
 	function signalSessionEnd() {
-		console.info(`SESSION END`); //LOG
+		const sound = document.getElementById('beep') as HTMLAudioElement;
+		sound.currentTime = 0;
+		sound.play();
 	}
 
 	return (
@@ -101,7 +103,7 @@ export default function PomodoroTimer() {
 				<div className="timer-display">
 					<h2 id="time-left">{formatTime(timeRemaining)}</h2>
 					{/* TODO add audio source */}
-					<audio id="beep" src=""></audio>
+					<audio id="beep" src="audio/mixkit-happy-bells-notification.wav"></audio>
 				</div>
 				<div className="timer-controls">
 					<button
